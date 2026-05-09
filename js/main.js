@@ -1,5 +1,5 @@
 /* ==============================================
-   NASSOUR MAHAMAT & ASSOCIÉS — MAIN JS
+   CFORI — MAIN JS
    Cabinet d'Avocats · N'Djamena, Tchad
    ============================================== */
 
