@@ -3,57 +3,84 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DS Avocats | Cabinet d'avocats international en droit des affaires</title>
-  <meta name="description" content="DS Avocats est un cabinet d'avocats international en droit des affaires, présent dans plus de 28 bureaux à travers le monde." />
+  <title>Cabinet NASSOUR MAHAMAT & Associés | Avocats au Barreau du Tchad</title>
+  <meta name="description" content="Cabinet juridique de référence au Tchad. Nos avocats vous accompagnent en droit OHADA, droit des affaires, droit social et contentieux à N'Djamena." />
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Swiper -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+  <!-- Styles -->
   <link rel="stylesheet" href="css/style.css" />
 </head>
-<body>
+<body class="loading">
 
-  <!-- ===== HEADER ===== -->
+  <!-- ═══ PRELOADER ═══ -->
+  <div class="preloader" id="preloader">
+    <div class="preloader__inner">
+      <div class="preloader__monogram">NM</div>
+      <div class="preloader__bar"><div class="preloader__fill"></div></div>
+      <p class="preloader__text">Avocats au Barreau du Tchad</p>
+    </div>
+  </div>
+
+  <!-- ═══ CURSOR ═══ -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- ═══ HEADER ═══ -->
   <header class="header" id="header">
     <div class="header__inner">
-      <a href="#" class="header__logo">
-        <span class="logo-ds">DS</span>
-        <span class="logo-avocats">AVOCATS</span>
+      <a href="#accueil" class="header__logo">
+        <div class="logo-monogram">NM</div>
+        <div class="logo-text">
+          <span class="logo-name">NASSOUR MAHAMAT</span>
+          <span class="logo-sub">& Associés · Avocats</span>
+        </div>
       </a>
 
       <nav class="nav" id="nav">
         <ul class="nav__list">
           <li class="nav__item nav__item--has-sub">
-            <a href="#expertises" class="nav__link">Expertises</a>
-            <ul class="nav__sub">
-              <li><a href="#expertises">Droit des sociétés</a></li>
-              <li><a href="#expertises">Droit fiscal</a></li>
-              <li><a href="#expertises">Droit social</a></li>
-              <li><a href="#expertises">Fusions-acquisitions</a></li>
-              <li><a href="#expertises">Contentieux</a></li>
-              <li><a href="#expertises">Droit immobilier</a></li>
-            </ul>
-          </li>
-          <li class="nav__item nav__item--has-sub">
-            <a href="#secteurs" class="nav__link">Secteurs</a>
-            <ul class="nav__sub">
-              <li><a href="#secteurs">Banque & Finance</a></li>
-              <li><a href="#secteurs">Énergie</a></li>
-              <li><a href="#secteurs">Santé</a></li>
-              <li><a href="#secteurs">Technologie</a></li>
-              <li><a href="#secteurs">Immobilier</a></li>
-            </ul>
-          </li>
-          <li class="nav__item nav__item--has-sub">
-            <a href="#bureaux" class="nav__link">Bureaux</a>
-            <ul class="nav__sub">
-              <li><a href="#bureaux">Europe</a></li>
-              <li><a href="#bureaux">Afrique</a></li>
-              <li><a href="#bureaux">Asie</a></li>
-              <li><a href="#bureaux">Amériques</a></li>
-            </ul>
+            <a href="#expertises" class="nav__link">Expertises <span class="nav__arrow">›</span></a>
+            <div class="nav__mega">
+              <div class="nav__mega-grid">
+                <a class="nav__mega-item" href="#expertises">
+                  <span class="nav__mega-icon">⚖</span>
+                  <span>Droit des sociétés</span>
+                </a>
+                <a class="nav__mega-item" href="#expertises">
+                  <span class="nav__mega-icon">📑</span>
+                  <span>Droit OHADA</span>
+                </a>
+                <a class="nav__mega-item" href="#expertises">
+                  <span class="nav__mega-icon">💼</span>
+                  <span>Droit fiscal</span>
+                </a>
+                <a class="nav__mega-item" href="#expertises">
+                  <span class="nav__mega-icon">👥</span>
+                  <span>Droit social</span>
+                </a>
+                <a class="nav__mega-item" href="#expertises">
+                  <span class="nav__mega-icon">🏛</span>
+                  <span>Contentieux</span>
+                </a>
+                <a class="nav__mega-item" href="#expertises">
+                  <span class="nav__mega-icon">🤝</span>
+                  <span>Fusions-Acquisitions</span>
+                </a>
+              </div>
+            </div>
           </li>
           <li class="nav__item">
-            <a href="#equipe" class="nav__link">Équipe</a>
+            <a href="#equipe" class="nav__link">Notre équipe</a>
+          </li>
+          <li class="nav__item">
+            <a href="#about" class="nav__link">Le cabinet</a>
           </li>
           <li class="nav__item">
             <a href="#actualites" class="nav__link">Actualités</a>
@@ -64,8 +91,13 @@
         </ul>
       </nav>
 
-      <div class="header__actions">
-        <a href="#contact" class="btn btn--outline btn--sm">Nous contacter</a>
+      <div class="header__right">
+        <div class="header__lang">
+          <a href="#" class="lang active">FR</a>
+          <span>|</span>
+          <a href="#" class="lang">AR</a>
+        </div>
+        <a href="#contact" class="btn btn--gold btn--sm">Consultation</a>
         <button class="burger" id="burger" aria-label="Menu">
           <span></span><span></span><span></span>
         </button>
@@ -73,610 +105,900 @@
     </div>
   </header>
 
-  <!-- ===== HERO ===== -->
+  <!-- ═══ HERO ═══ -->
   <section class="hero" id="accueil">
-    <div class="hero__bg">
-      <div class="hero__overlay"></div>
-      <div class="hero__shapes">
-        <div class="hero__shape hero__shape--1"></div>
-        <div class="hero__shape hero__shape--2"></div>
+    <!-- Swiper background -->
+    <div class="swiper hero-swiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide hero-slide" style="background-image: url('https://images.unsplash.com/photo-1589391886645-d51941baf7fb?auto=format&fit=crop&w=1920&q=80')"></div>
+        <div class="swiper-slide hero-slide" style="background-image: url('https://images.unsplash.com/photo-1521791055366-0d553381ad47?auto=format&fit=crop&w=1920&q=80')"></div>
+        <div class="swiper-slide hero-slide" style="background-image: url('https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1920&q=80')"></div>
+        <div class="swiper-slide hero-slide" style="background-image: url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1920&q=80')"></div>
       </div>
     </div>
+
+    <!-- Overlay -->
+    <div class="hero__overlay"></div>
+    <div class="hero__gradient"></div>
+
+    <!-- Particules dorées -->
+    <canvas class="hero__particles" id="particles"></canvas>
+
+    <!-- Contenu -->
     <div class="hero__content container">
-      <div class="hero__label">Cabinet d'avocats international depuis 1972</div>
+      <div class="hero__badge">
+        <span class="hero__badge-dot"></span>
+        Barreau du Tchad · N'Djamena
+      </div>
+
       <h1 class="hero__title">
-        L'excellence juridique<br />
-        <em>au service de vos ambitions</em>
+        <span class="hero__title-top">Engagés pour</span>
+        <em class="hero__title-typed" id="typedText"></em>
       </h1>
-      <p class="hero__text">
-        DS Avocats accompagne les entreprises dans leurs défis juridiques les plus complexes,
-        avec la force d'un cabinet international et l'agilité d'un acteur local.
+
+      <p class="hero__subtitle">
+        Cabinet juridique de référence en République du Tchad.<br />
+        Expertise OHADA, droit des affaires et contentieux à votre service.
       </p>
-      <div class="hero__ctas">
-        <a href="#expertises" class="btn btn--gold">Nos expertises</a>
-        <a href="#contact" class="btn btn--ghost">Prendre rendez-vous</a>
+
+      <div class="hero__actions">
+        <a href="#contact" class="btn btn--gold hero__cta">
+          <span>Consultation gratuite</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="#about" class="btn btn--glass hero__cta">
+          <span>Découvrir le cabinet</span>
+        </a>
+      </div>
+
+      <!-- Slide indicators -->
+      <div class="hero__indicators" id="heroIndicators">
+        <div class="hero__indicator active"></div>
+        <div class="hero__indicator"></div>
+        <div class="hero__indicator"></div>
+        <div class="hero__indicator"></div>
       </div>
     </div>
-    <div class="hero__scroll">
-      <div class="hero__scroll-line"></div>
+
+    <!-- Scroll cue -->
+    <div class="hero__scroll-cue">
+      <div class="hero__scroll-mouse">
+        <div class="hero__scroll-wheel"></div>
+      </div>
       <span>Défiler</span>
     </div>
+
+    <!-- Bandeau titre de slide -->
+    <div class="hero__slide-counter">
+      <span id="slideNum">01</span>
+      <div class="hero__slide-line"><div class="hero__slide-progress" id="slideProgress"></div></div>
+      <span>04</span>
+    </div>
   </section>
 
-  <!-- ===== CHIFFRES CLÉS ===== -->
-  <section class="stats">
+  <!-- ═══ AVOCATS EN VEDETTE ═══ -->
+  <section class="avocats-vedette" id="equipe-hero">
     <div class="container">
-      <div class="stats__grid">
-        <div class="stat-item" data-aos>
-          <span class="stat-item__number" data-target="400">0</span>
-          <span class="stat-item__plus">+</span>
-          <p class="stat-item__label">Avocats</p>
-        </div>
-        <div class="stat-item" data-aos>
-          <span class="stat-item__number" data-target="28">0</span>
-          <span class="stat-item__plus"></span>
-          <p class="stat-item__label">Bureaux mondiaux</p>
-        </div>
-        <div class="stat-item" data-aos>
-          <span class="stat-item__number" data-target="50">0</span>
-          <span class="stat-item__plus">+</span>
-          <p class="stat-item__label">Ans d'expérience</p>
-        </div>
-        <div class="stat-item" data-aos>
-          <span class="stat-item__number" data-target="13">0</span>
-          <span class="stat-item__plus"></span>
-          <p class="stat-item__label">Desks internationaux</p>
-        </div>
+      <div class="avocats-vedette__header">
+        <div class="section-label">Nos avocats associés</div>
+        <h2 class="section-title">Des experts à votre<br /><em>service en permanence</em></h2>
+      </div>
+
+      <div class="avocats-vedette__grid">
+
+        <article class="avocat-big-card">
+          <div class="avocat-big-card__img-wrap">
+            <img
+              src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=600&q=80"
+              alt="Maître Amina Nassour"
+              class="avocat-big-card__img"
+              loading="lazy"
+            />
+            <div class="avocat-big-card__overlay">
+              <p class="avocat-big-card__bio">Spécialiste en droit OHADA et droit des sociétés. Diplômée de l'Université Paris I Panthéon-Sorbonne et du Barreau de N'Djamena.</p>
+              <a href="#contact" class="avocat-big-card__contact">Contacter →</a>
+            </div>
+          </div>
+          <div class="avocat-big-card__info">
+            <div class="avocat-big-card__tag">Associée fondatrice</div>
+            <h3>Maître Amina Nassour</h3>
+            <p>Droit des sociétés · OHADA</p>
+          </div>
+        </article>
+
+        <article class="avocat-big-card">
+          <div class="avocat-big-card__img-wrap">
+            <img
+              src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80"
+              alt="Maître Ibrahim Mahamat"
+              class="avocat-big-card__img"
+              loading="lazy"
+            />
+            <div class="avocat-big-card__overlay">
+              <p class="avocat-big-card__bio">Expert en contentieux commercial et arbitrage international. Membre du Comité de droit OHADA du Tchad.</p>
+              <a href="#contact" class="avocat-big-card__contact">Contacter →</a>
+            </div>
+          </div>
+          <div class="avocat-big-card__info">
+            <div class="avocat-big-card__tag">Associé</div>
+            <h3>Maître Ibrahim Mahamat</h3>
+            <p>Contentieux · Arbitrage</p>
+          </div>
+        </article>
+
+        <article class="avocat-big-card">
+          <div class="avocat-big-card__img-wrap">
+            <img
+              src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80"
+              alt="Maître Fatimé Oumar"
+              class="avocat-big-card__img"
+              loading="lazy"
+            />
+            <div class="avocat-big-card__overlay">
+              <p class="avocat-big-card__bio">Spécialiste en droit du travail et protection sociale. Conseillère auprès de grandes entreprises implantées au Tchad.</p>
+              <a href="#contact" class="avocat-big-card__contact">Contacter →</a>
+            </div>
+          </div>
+          <div class="avocat-big-card__info">
+            <div class="avocat-big-card__tag">Associée</div>
+            <h3>Maître Fatimé Oumar</h3>
+            <p>Droit social · RH</p>
+          </div>
+        </article>
+
+        <article class="avocat-big-card">
+          <div class="avocat-big-card__img-wrap">
+            <img
+              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80"
+              alt="Maître Abakar Saleh"
+              class="avocat-big-card__img"
+              loading="lazy"
+            />
+            <div class="avocat-big-card__overlay">
+              <p class="avocat-big-card__bio">Expert en fiscalité des entreprises et montages juridico-fiscaux. Ancien conseiller fiscal au Ministère des Finances du Tchad.</p>
+              <a href="#contact" class="avocat-big-card__contact">Contacter →</a>
+            </div>
+          </div>
+          <div class="avocat-big-card__info">
+            <div class="avocat-big-card__tag">Associé</div>
+            <h3>Maître Abakar Saleh</h3>
+            <p>Droit fiscal · Finance</p>
+          </div>
+        </article>
+
+      </div>
+
+      <div class="avocats-vedette__cta">
+        <a href="#equipe" class="btn btn--outline">Voir toute l'équipe</a>
       </div>
     </div>
   </section>
 
-  <!-- ===== À PROPOS ===== -->
+  <!-- ═══ STATS ═══ -->
+  <section class="stats">
+    <div class="stats__bg"></div>
+    <div class="container stats__grid">
+      <div class="stat-item">
+        <div class="stat-item__value">
+          <span class="counter" data-target="25">0</span>+
+        </div>
+        <p>Années d'expérience</p>
+      </div>
+      <div class="stat-item">
+        <div class="stat-item__value">
+          <span class="counter" data-target="500">0</span>+
+        </div>
+        <p>Dossiers traités</p>
+      </div>
+      <div class="stat-item">
+        <div class="stat-item__value">
+          <span class="counter" data-target="98">0</span>%
+        </div>
+        <p>Clients satisfaits</p>
+      </div>
+      <div class="stat-item">
+        <div class="stat-item__value">
+          <span class="counter" data-target="12">0</span>
+        </div>
+        <p>Avocats spécialisés</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ À PROPOS ═══ -->
   <section class="about" id="about">
     <div class="container about__grid">
-      <div class="about__visual" data-aos>
-        <div class="about__img-wrap">
-          <div class="about__img about__img--bg"></div>
-          <div class="about__img-card">
-            <div class="about__img-card-icon">⚖</div>
-            <p>Depuis <strong>1972</strong>, une référence du droit des affaires</p>
+
+      <div class="about__images">
+        <div class="about__img-main">
+          <img
+            src="https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=900&q=80"
+            alt="Cabinet juridique N'Djamena"
+            loading="lazy"
+          />
+        </div>
+        <div class="about__img-secondary">
+          <img
+            src="https://images.unsplash.com/photo-1453728013993-6d66e9c9123a?auto=format&fit=crop&w=400&q=80"
+            alt="Avocats en réunion"
+            loading="lazy"
+          />
+          <div class="about__year-badge">
+            <span class="about__year">1999</span>
+            <span>Fondé à<br />N'Djamena</span>
           </div>
         </div>
       </div>
-      <div class="about__content" data-aos>
-        <div class="section-label">À propos de DS Avocats</div>
-        <h2 class="section-title">Un cabinet international<br /><em>ancré dans le droit français</em></h2>
+
+      <div class="about__content">
+        <div class="section-label">Notre histoire</div>
+        <h2 class="section-title">Un cabinet tchadien<br /><em>ancré dans l'excellence</em></h2>
+        <div class="about__gold-line"></div>
         <p class="about__text">
-          DS Avocats est un cabinet d'avocats international spécialisé en droit des affaires. Fondé en 1972,
-          le cabinet a su construire au fil des années un réseau mondial tout en préservant son identité française
-          et son expertise en droit continental.
+          Fondé en 1999 à N'Djamena, le Cabinet NASSOUR MAHAMAT & Associés est devenu
+          l'une des références du droit des affaires en République du Tchad. Notre cabinet
+          accompagne entreprises locales et internationales, investisseurs et particuliers
+          dans leurs défis juridiques les plus complexes.
         </p>
         <p class="about__text">
-          Notre modèle unique allie la puissance d'un cabinet global et l'agilité d'un acteur local,
-          permettant à nos clients de bénéficier d'un accompagnement sur mesure, quels que soient leur secteur
-          d'activité et leur implantation géographique.
+          Ancrés dans le droit OHADA et le droit tchadien, nos avocats associent
+          une formation internationale d'excellence à une connaissance profonde
+          du tissu économique et institutionnel du Tchad.
         </p>
-        <div class="about__values">
-          <div class="about__value">
-            <div class="about__value-icon">◆</div>
-            <div>
-              <strong>Excellence</strong>
-              <p>Une exigence de qualité dans chaque dossier</p>
+
+        <div class="about__pillars">
+          <div class="pillar">
+            <div class="pillar__icon">⚖</div>
+            <div class="pillar__text">
+              <strong>Rigueur juridique</strong>
+              <span>Analyse pointue, conseils précis</span>
             </div>
           </div>
-          <div class="about__value">
-            <div class="about__value-icon">◆</div>
-            <div>
-              <strong>Proximité</strong>
-              <p>Des équipes à votre écoute, partout dans le monde</p>
+          <div class="pillar">
+            <div class="pillar__icon">🌍</div>
+            <div class="pillar__text">
+              <strong>Vision africaine</strong>
+              <span>OHADA, droit continental et coutumier</span>
             </div>
           </div>
-          <div class="about__value">
-            <div class="about__value-icon">◆</div>
-            <div>
-              <strong>Innovation</strong>
-              <p>Des solutions juridiques adaptées aux nouveaux défis</p>
+          <div class="pillar">
+            <div class="pillar__icon">🏆</div>
+            <div class="pillar__text">
+              <strong>Résultats prouvés</strong>
+              <span>Plus de 500 dossiers résolus</span>
             </div>
           </div>
         </div>
-        <a href="#expertises" class="btn btn--dark">Découvrir nos expertises</a>
+
+        <a href="#expertises" class="btn btn--dark">Nos domaines d'expertise</a>
       </div>
     </div>
   </section>
 
-  <!-- ===== EXPERTISES ===== -->
+  <!-- ═══ VIDÉO / PRÉSENTATION ═══ -->
+  <section class="video-section">
+    <div class="video-section__bg"
+      style="background-image: url('https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1920&q=80')">
+    </div>
+    <div class="video-section__overlay"></div>
+    <div class="container video-section__content">
+      <div class="video-section__text">
+        <div class="section-label section-label--light">Notre engagement</div>
+        <h2 class="section-title section-title--light">
+          "La loi est notre outil,<br /><em>votre justice est notre mission."</em>
+        </h2>
+        <p class="section-desc section-desc--light">
+          Maître Amina Nassour — Associée fondatrice
+        </p>
+      </div>
+      <button class="video-play-btn" id="videoPlayBtn" aria-label="Voir la présentation vidéo">
+        <div class="video-play-btn__circle"></div>
+        <svg class="video-play-btn__icon" viewBox="0 0 24 24" fill="currentColor">
+          <polygon points="5,3 19,12 5,21"/>
+        </svg>
+        <span class="video-play-btn__label">Voir la présentation</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ═══ EXPERTISES ═══ -->
   <section class="expertises" id="expertises">
+    <div class="expertises__deco"></div>
     <div class="container">
       <div class="section-header">
         <div class="section-label section-label--light">Domaines d'intervention</div>
-        <h2 class="section-title section-title--light">Nos expertises juridiques</h2>
-        <p class="section-desc section-desc--light">
-          Une couverture complète du droit des affaires pour répondre à tous vos besoins juridiques
-        </p>
+        <h2 class="section-title section-title--light">
+          L'expertise au service<br /><em>de vos intérêts</em>
+        </h2>
       </div>
+
       <div class="expertises__grid">
 
-        <div class="expertise-card" data-aos>
-          <div class="expertise-card__num">01</div>
-          <div class="expertise-card__icon">⚖</div>
-          <h3 class="expertise-card__title">Droit des sociétés</h3>
-          <p class="expertise-card__text">
-            Conseil en droit des sociétés, gouvernance d'entreprise, restructurations et opérations de capital.
-          </p>
-          <a href="#contact" class="expertise-card__link">En savoir plus →</a>
+        <div class="exp-card">
+          <div class="exp-card__front">
+            <div class="exp-card__num">01</div>
+            <div class="exp-card__icon">
+              <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="19" stroke="currentColor" stroke-width="1.5"/><path d="M12 20h16M20 12v16" stroke="currentColor" stroke-width="1.5"/></svg>
+            </div>
+            <h3>Droit OHADA</h3>
+            <p>Actes uniformes, droit commercial général, droit des sociétés commerciales OHADA.</p>
+          </div>
+          <div class="exp-card__bar"></div>
         </div>
 
-        <div class="expertise-card" data-aos>
-          <div class="expertise-card__num">02</div>
-          <div class="expertise-card__icon">📊</div>
-          <h3 class="expertise-card__title">Fusions-Acquisitions</h3>
-          <p class="expertise-card__text">
-            Accompagnement complet dans les opérations de M&A, due diligence, négociations et closing.
-          </p>
-          <a href="#contact" class="expertise-card__link">En savoir plus →</a>
+        <div class="exp-card">
+          <div class="exp-card__front">
+            <div class="exp-card__num">02</div>
+            <div class="exp-card__icon">
+              <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="19" stroke="currentColor" stroke-width="1.5"/><rect x="12" y="14" width="16" height="12" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
+            </div>
+            <h3>Droit des sociétés</h3>
+            <p>Constitution, gouvernance, restructurations, dissolution et liquidation de sociétés.</p>
+          </div>
+          <div class="exp-card__bar"></div>
         </div>
 
-        <div class="expertise-card" data-aos>
-          <div class="expertise-card__num">03</div>
-          <div class="expertise-card__icon">💼</div>
-          <h3 class="expertise-card__title">Droit fiscal</h3>
-          <p class="expertise-card__text">
-            Optimisation fiscale, restructurations, fiscalité internationale et contentieux fiscal.
-          </p>
-          <a href="#contact" class="expertise-card__link">En savoir plus →</a>
+        <div class="exp-card">
+          <div class="exp-card__front">
+            <div class="exp-card__num">03</div>
+            <div class="exp-card__icon">
+              <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="19" stroke="currentColor" stroke-width="1.5"/><path d="M14 26l6-12 6 12" stroke="currentColor" stroke-width="1.5"/><path d="M16 22h8" stroke="currentColor" stroke-width="1.5"/></svg>
+            </div>
+            <h3>Contentieux</h3>
+            <p>Représentation devant la Cour Suprême, tribunaux de commerce, arbitrage CCJA.</p>
+          </div>
+          <div class="exp-card__bar"></div>
         </div>
 
-        <div class="expertise-card" data-aos>
-          <div class="expertise-card__num">04</div>
-          <div class="expertise-card__icon">👥</div>
-          <h3 class="expertise-card__title">Droit social</h3>
-          <p class="expertise-card__text">
-            Relations individuelles et collectives de travail, restructurations sociales, contentieux prud'homal.
-          </p>
-          <a href="#contact" class="expertise-card__link">En savoir plus →</a>
+        <div class="exp-card">
+          <div class="exp-card__front">
+            <div class="exp-card__num">04</div>
+            <div class="exp-card__icon">
+              <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="19" stroke="currentColor" stroke-width="1.5"/><path d="M20 13v14M14 16l6-3 6 3" stroke="currentColor" stroke-width="1.5"/></svg>
+            </div>
+            <h3>Droit fiscal</h3>
+            <p>Optimisation fiscale, contentieux fiscal, fiscalité des investissements étrangers au Tchad.</p>
+          </div>
+          <div class="exp-card__bar"></div>
         </div>
 
-        <div class="expertise-card" data-aos>
-          <div class="expertise-card__num">05</div>
-          <div class="expertise-card__icon">🏛</div>
-          <h3 class="expertise-card__title">Contentieux</h3>
-          <p class="expertise-card__text">
-            Représentation devant toutes les juridictions, arbitrage international, résolution des litiges.
-          </p>
-          <a href="#contact" class="expertise-card__link">En savoir plus →</a>
+        <div class="exp-card">
+          <div class="exp-card__front">
+            <div class="exp-card__num">05</div>
+            <div class="exp-card__icon">
+              <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="19" stroke="currentColor" stroke-width="1.5"/><path d="M15 20a5 5 0 1 0 10 0 5 5 0 0 0-10 0z" stroke="currentColor" stroke-width="1.5"/></svg>
+            </div>
+            <h3>Droit social</h3>
+            <p>Code du travail tchadien, conflits collectifs, licenciements, protection sociale.</p>
+          </div>
+          <div class="exp-card__bar"></div>
         </div>
 
-        <div class="expertise-card" data-aos>
-          <div class="expertise-card__num">06</div>
-          <div class="expertise-card__icon">🏢</div>
-          <h3 class="expertise-card__title">Droit immobilier</h3>
-          <p class="expertise-card__text">
-            Transactions immobilières, baux commerciaux, promotion immobilière et droit de l'urbanisme.
-          </p>
-          <a href="#contact" class="expertise-card__link">En savoir plus →</a>
+        <div class="exp-card">
+          <div class="exp-card__front">
+            <div class="exp-card__num">06</div>
+            <div class="exp-card__icon">
+              <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="19" stroke="currentColor" stroke-width="1.5"/><path d="M13 27l4-4 4 4 6-8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <h3>Fusions-Acquisitions</h3>
+            <p>Due diligence, structuration des opérations, négociations et closing transactionnel.</p>
+          </div>
+          <div class="exp-card__bar"></div>
         </div>
 
-        <div class="expertise-card" data-aos>
-          <div class="expertise-card__num">07</div>
-          <div class="expertise-card__icon">🔒</div>
-          <h3 class="expertise-card__title">Droit de la propriété intellectuelle</h3>
-          <p class="expertise-card__text">
-            Protection des marques, brevets, droits d'auteur, et lutte contre la contrefaçon.
-          </p>
-          <a href="#contact" class="expertise-card__link">En savoir plus →</a>
+        <div class="exp-card">
+          <div class="exp-card__front">
+            <div class="exp-card__num">07</div>
+            <div class="exp-card__icon">
+              <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="19" stroke="currentColor" stroke-width="1.5"/><path d="M20 14v12M16 18l4-4 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <h3>Droit minier & pétrolier</h3>
+            <p>Contrats d'exploration, code pétrolier tchadien, partenariats public-privé dans le secteur énergétique.</p>
+          </div>
+          <div class="exp-card__bar"></div>
         </div>
 
-        <div class="expertise-card" data-aos>
-          <div class="expertise-card__num">08</div>
-          <div class="expertise-card__icon">🌐</div>
-          <h3 class="expertise-card__title">Droit international</h3>
-          <p class="expertise-card__text">
-            Commerce international, investissements étrangers, arbitrage et droit des contrats internationaux.
-          </p>
-          <a href="#contact" class="expertise-card__link">En savoir plus →</a>
+        <div class="exp-card">
+          <div class="exp-card__front">
+            <div class="exp-card__num">08</div>
+            <div class="exp-card__icon">
+              <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="19" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="13" width="12" height="14" rx="1" stroke="currentColor" stroke-width="1.5"/><path d="M17 17h6M17 20h6M17 23h4" stroke="currentColor" stroke-width="1.5"/></svg>
+            </div>
+            <h3>Droit immobilier</h3>
+            <p>Transactions foncières, baux commerciaux, promotion immobilière et droit de l'urbanisme au Tchad.</p>
+          </div>
+          <div class="exp-card__bar"></div>
         </div>
 
       </div>
     </div>
   </section>
 
-  <!-- ===== SECTEURS ===== -->
-  <section class="secteurs" id="secteurs">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-label">Secteurs d'activité</div>
-        <h2 class="section-title">Une expertise sectorielle<br /><em>approfondie</em></h2>
-      </div>
-      <div class="secteurs__grid">
-        <div class="secteur-item" data-aos>
-          <div class="secteur-item__num">–</div>
-          <h3>Banque & Finance</h3>
-          <p>Financement structuré, réglementation bancaire, marchés de capitaux et fintech.</p>
-        </div>
-        <div class="secteur-item" data-aos>
-          <div class="secteur-item__num">–</div>
-          <h3>Énergie & Environnement</h3>
-          <p>Énergies renouvelables, transition énergétique, droit minier et environnemental.</p>
-        </div>
-        <div class="secteur-item" data-aos>
-          <div class="secteur-item__num">–</div>
-          <h3>Santé & Sciences de la vie</h3>
-          <p>Pharmaceutique, dispositifs médicaux, biotechnologies et réglementation sanitaire.</p>
-        </div>
-        <div class="secteur-item" data-aos>
-          <div class="secteur-item__num">–</div>
-          <h3>Technologie & Digital</h3>
-          <p>RGPD, cybersécurité, intelligence artificielle, e-commerce et transformations digitales.</p>
-        </div>
-        <div class="secteur-item" data-aos>
-          <div class="secteur-item__num">–</div>
-          <h3>Luxe & Retail</h3>
-          <p>Distribution, franchise, droit de la mode, protection des savoir-faire et des marques.</p>
-        </div>
-        <div class="secteur-item" data-aos>
-          <div class="secteur-item__num">–</div>
-          <h3>Agroalimentaire</h3>
-          <p>Droit alimentaire, sécurité sanitaire, distribution et contrats agricoles.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== PRÉSENCE INTERNATIONALE ===== -->
-  <section class="international" id="bureaux">
-    <div class="international__bg"></div>
-    <div class="container international__content">
-      <div class="section-label section-label--light">Présence mondiale</div>
-      <h2 class="section-title section-title--light">28 bureaux,<br /><em>une vision globale</em></h2>
-      <p class="section-desc section-desc--light">
-        Notre réseau mondial vous offre un accompagnement juridique de premier plan,
-        où que vous soyez dans le monde.
-      </p>
-      <div class="international__zones">
-        <div class="zone" data-aos>
-          <h4 class="zone__title">Europe</h4>
-          <ul class="zone__list">
-            <li>Paris</li>
-            <li>Lyon</li>
-            <li>Bordeaux</li>
-            <li>Marseille</li>
-            <li>Bruxelles</li>
-            <li>Madrid</li>
-            <li>Milan</li>
-          </ul>
-        </div>
-        <div class="zone" data-aos>
-          <h4 class="zone__title">Afrique</h4>
-          <ul class="zone__list">
-            <li>Casablanca</li>
-            <li>Dakar</li>
-            <li>Abidjan</li>
-            <li>Tunis</li>
-            <li>Alger</li>
-            <li>Libreville</li>
-          </ul>
-        </div>
-        <div class="zone" data-aos>
-          <h4 class="zone__title">Asie</h4>
-          <ul class="zone__list">
-            <li>Singapour</li>
-            <li>Hong Kong</li>
-            <li>Shanghai</li>
-            <li>Tokyo</li>
-            <li>Ho Chi Minh-Ville</li>
-          </ul>
-        </div>
-        <div class="zone" data-aos>
-          <h4 class="zone__title">Amériques</h4>
-          <ul class="zone__list">
-            <li>New York</li>
-            <li>São Paulo</li>
-            <li>Buenos Aires</li>
-            <li>Montréal</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== ÉQUIPE ===== -->
+  <!-- ═══ ÉQUIPE COMPLÈTE ═══ -->
   <section class="equipe" id="equipe">
     <div class="container">
       <div class="section-header">
         <div class="section-label">Notre équipe</div>
-        <h2 class="section-title">Des avocats engagés<br /><em>à vos côtés</em></h2>
-        <p class="section-desc">
-          Plus de 400 avocats spécialisés, unis par une même passion pour le droit et l'excellence du service.
-        </p>
+        <h2 class="section-title">Des avocats tchadiens<br /><em>au plus haut niveau</em></h2>
+        <p class="section-desc">Formés dans les meilleures universités françaises et africaines, nos avocats maîtrisent le droit OHADA et le droit tchadien dans toute sa profondeur.</p>
       </div>
+
       <div class="equipe__grid">
 
-        <div class="avocat-card" data-aos>
-          <div class="avocat-card__photo avocat-card__photo--1"></div>
-          <div class="avocat-card__info">
-            <h3 class="avocat-card__name">Sophie Delamare</h3>
-            <p class="avocat-card__role">Associée — Fusions-Acquisitions</p>
-            <p class="avocat-card__bureau">Paris</p>
+        <div class="team-card">
+          <div class="team-card__photo-wrap">
+            <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=500&q=80" alt="Maître Amina Nassour" loading="lazy" />
+            <div class="team-card__overlay">
+              <p>Droit OHADA · Droit des sociétés · 15 ans d'expérience</p>
+              <a href="#contact">Prendre rendez-vous →</a>
+            </div>
+          </div>
+          <div class="team-card__body">
+            <span class="team-card__badge">Associée fondatrice</span>
+            <h3>Maître Amina Nassour</h3>
+            <p>Droit des sociétés · OHADA</p>
+            <div class="team-card__social">
+              <a href="#" aria-label="LinkedIn">in</a>
+            </div>
           </div>
         </div>
 
-        <div class="avocat-card" data-aos>
-          <div class="avocat-card__photo avocat-card__photo--2"></div>
-          <div class="avocat-card__info">
-            <h3 class="avocat-card__name">Marc Beaumont</h3>
-            <p class="avocat-card__role">Associé — Droit fiscal</p>
-            <p class="avocat-card__bureau">Paris</p>
+        <div class="team-card">
+          <div class="team-card__photo-wrap">
+            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=500&q=80" alt="Maître Ibrahim Mahamat" loading="lazy" />
+            <div class="team-card__overlay">
+              <p>Contentieux commercial · Arbitrage CCJA · 12 ans d'expérience</p>
+              <a href="#contact">Prendre rendez-vous →</a>
+            </div>
+          </div>
+          <div class="team-card__body">
+            <span class="team-card__badge">Associé</span>
+            <h3>Maître Ibrahim Mahamat</h3>
+            <p>Contentieux · Arbitrage</p>
+            <div class="team-card__social">
+              <a href="#" aria-label="LinkedIn">in</a>
+            </div>
           </div>
         </div>
 
-        <div class="avocat-card" data-aos>
-          <div class="avocat-card__photo avocat-card__photo--3"></div>
-          <div class="avocat-card__info">
-            <h3 class="avocat-card__name">Isabelle Fontaine</h3>
-            <p class="avocat-card__role">Associée — Droit social</p>
-            <p class="avocat-card__bureau">Lyon</p>
+        <div class="team-card">
+          <div class="team-card__photo-wrap">
+            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=500&q=80" alt="Maître Fatimé Oumar" loading="lazy" />
+            <div class="team-card__overlay">
+              <p>Droit du travail · Relations collectives · 10 ans d'expérience</p>
+              <a href="#contact">Prendre rendez-vous →</a>
+            </div>
+          </div>
+          <div class="team-card__body">
+            <span class="team-card__badge">Associée</span>
+            <h3>Maître Fatimé Oumar</h3>
+            <p>Droit social · Ressources humaines</p>
+            <div class="team-card__social">
+              <a href="#" aria-label="LinkedIn">in</a>
+            </div>
           </div>
         </div>
 
-        <div class="avocat-card" data-aos>
-          <div class="avocat-card__photo avocat-card__photo--4"></div>
-          <div class="avocat-card__info">
-            <h3 class="avocat-card__name">Antoine Leroux</h3>
-            <p class="avocat-card__role">Associé — Contentieux</p>
-            <p class="avocat-card__bureau">Bruxelles</p>
+        <div class="team-card">
+          <div class="team-card__photo-wrap">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=80" alt="Maître Abakar Saleh" loading="lazy" />
+            <div class="team-card__overlay">
+              <p>Fiscalité d'entreprise · Investissements · 8 ans d'expérience</p>
+              <a href="#contact">Prendre rendez-vous →</a>
+            </div>
+          </div>
+          <div class="team-card__body">
+            <span class="team-card__badge">Associé</span>
+            <h3>Maître Abakar Saleh</h3>
+            <p>Droit fiscal · Finance d'entreprise</p>
+            <div class="team-card__social">
+              <a href="#" aria-label="LinkedIn">in</a>
+            </div>
           </div>
         </div>
 
-      </div>
-      <div class="equipe__cta">
-        <a href="#contact" class="btn btn--dark">Voir toute l'équipe</a>
+        <div class="team-card">
+          <div class="team-card__photo-wrap">
+            <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=500&q=80" alt="Maître Hawa Déby" loading="lazy" />
+            <div class="team-card__overlay">
+              <p>Droit minier · Secteur pétrolier · 9 ans d'expérience</p>
+              <a href="#contact">Prendre rendez-vous →</a>
+            </div>
+          </div>
+          <div class="team-card__body">
+            <span class="team-card__badge">Avocate senior</span>
+            <h3>Maître Hawa Déby</h3>
+            <p>Droit minier · Pétrole & Gaz</p>
+            <div class="team-card__social">
+              <a href="#" aria-label="LinkedIn">in</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="team-card">
+          <div class="team-card__photo-wrap">
+            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=500&q=80" alt="Maître Moussa Alfarouk" loading="lazy" />
+            <div class="team-card__overlay">
+              <p>Droit immobilier · Foncier · 7 ans d'expérience</p>
+              <a href="#contact">Prendre rendez-vous →</a>
+            </div>
+          </div>
+          <div class="team-card__body">
+            <span class="team-card__badge">Avocat senior</span>
+            <h3>Maître Moussa Alfarouk</h3>
+            <p>Droit immobilier · Foncier</p>
+            <div class="team-card__social">
+              <a href="#" aria-label="LinkedIn">in</a>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
 
-  <!-- ===== ACTUALITÉS ===== -->
+  <!-- ═══ RÉALISATIONS ═══ -->
+  <section class="realisations">
+    <div class="container">
+      <div class="section-label">Références</div>
+      <h2 class="section-title">Quelques dossiers<br /><em>notables</em></h2>
+      <div class="realisations__grid">
+        <div class="realisation-item">
+          <div class="realisation-item__year">2024</div>
+          <h4>Acquisition d'un groupe pétrolier</h4>
+          <p>Conseil juridique dans une opération d'acquisition d'actifs pétroliers évalués à 120M USD dans le Bassin du Lac Tchad.</p>
+          <span class="realisation-item__tag">M&A · Droit pétrolier</span>
+        </div>
+        <div class="realisation-item">
+          <div class="realisation-item__year">2023</div>
+          <h4>Restructuration d'un groupe de distribution</h4>
+          <p>Accompagnement complet dans la restructuration juridique et sociale d'un groupe national employant 800 salariés.</p>
+          <span class="realisation-item__tag">Droit social · OHADA</span>
+        </div>
+        <div class="realisation-item">
+          <div class="realisation-item__year">2023</div>
+          <h4>Arbitrage CCJA international</h4>
+          <p>Représentation d'une entreprise tchadienne dans un arbitrage international devant la CCJA d'Abidjan. Victoire obtenue.</p>
+          <span class="realisation-item__tag">Contentieux · Arbitrage</span>
+        </div>
+        <div class="realisation-item">
+          <div class="realisation-item__year">2022</div>
+          <h4>Investissement foncier majeur à N'Djamena</h4>
+          <p>Sécurisation juridique d'un projet immobilier d'envergure couvrant 15 hectares dans la zone périurbaine de N'Djamena.</p>
+          <span class="realisation-item__tag">Droit foncier · Immobilier</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ACTUALITÉS ═══ -->
   <section class="actualites" id="actualites">
     <div class="container">
-      <div class="section-header actualites__header">
+      <div class="actualites__header">
         <div>
-          <div class="section-label section-label--light">Publications & Actualités</div>
-          <h2 class="section-title section-title--light">Dernières actualités</h2>
+          <div class="section-label section-label--light">Publications & Veille juridique</div>
+          <h2 class="section-title section-title--light">Actualités juridiques</h2>
         </div>
-        <a href="#actualites" class="btn btn--outline-light">Toutes les actualités</a>
+        <a href="#" class="btn btn--outline-light">Toutes les publications</a>
       </div>
+
       <div class="actualites__grid">
-
-        <article class="actu-card actu-card--featured" data-aos>
-          <div class="actu-card__tag">Droit des sociétés</div>
-          <time class="actu-card__date">12 avril 2025</time>
-          <h3 class="actu-card__title">
-            Réforme du droit des contrats : enjeux et opportunités pour les entreprises
-          </h3>
-          <p class="actu-card__excerpt">
-            Analyse des principales modifications introduites par la réforme et leurs implications pratiques pour les acteurs économiques.
-          </p>
-          <a href="#actualites" class="actu-card__link">Lire l'article →</a>
+        <article class="actu-card actu-card--featured">
+          <img
+            src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&q=80"
+            alt="Actualité juridique Tchad"
+            class="actu-card__img"
+            loading="lazy"
+          />
+          <div class="actu-card__body">
+            <span class="actu-card__tag">OHADA</span>
+            <time>15 mars 2025</time>
+            <h3>Réforme du droit OHADA : ce qui change pour les entreprises tchadiennes en 2025</h3>
+            <p>Analyse des nouvelles dispositions de l'Acte uniforme révisé sur le droit commercial général et leurs impacts pratiques.</p>
+            <a href="#" class="actu-card__link">Lire l'article →</a>
+          </div>
         </article>
 
-        <article class="actu-card" data-aos>
-          <div class="actu-card__tag">Fiscal</div>
-          <time class="actu-card__date">8 mars 2025</time>
-          <h3 class="actu-card__title">
-            Fiscalité internationale : les nouvelles règles OCDE sur le pilier 2
-          </h3>
-          <a href="#actualites" class="actu-card__link">Lire l'article →</a>
+        <article class="actu-card">
+          <img
+            src="https://images.unsplash.com/photo-1521791055366-0d553381ad47?auto=format&fit=crop&w=600&q=80"
+            alt="Investissement Tchad"
+            class="actu-card__img actu-card__img--sm"
+            loading="lazy"
+          />
+          <div class="actu-card__body">
+            <span class="actu-card__tag">Fiscal</span>
+            <time>2 février 2025</time>
+            <h3>Nouvelles incitations fiscales pour les investisseurs étrangers au Tchad</h3>
+            <a href="#" class="actu-card__link">Lire →</a>
+          </div>
         </article>
 
-        <article class="actu-card" data-aos>
-          <div class="actu-card__tag">M&A</div>
-          <time class="actu-card__date">22 février 2025</time>
-          <h3 class="actu-card__title">
-            DS Avocats conseille un fonds d'investissement dans une acquisition majeure en Afrique
-          </h3>
-          <a href="#actualites" class="actu-card__link">Lire l'article →</a>
+        <article class="actu-card">
+          <img
+            src="https://images.unsplash.com/photo-1589391886645-d51941baf7fb?auto=format&fit=crop&w=600&q=80"
+            alt="Droit social Tchad"
+            class="actu-card__img actu-card__img--sm"
+            loading="lazy"
+          />
+          <div class="actu-card__body">
+            <span class="actu-card__tag">Droit social</span>
+            <time>18 janvier 2025</time>
+            <h3>Code du travail tchadien : guide pratique pour les employeurs en 2025</h3>
+            <a href="#" class="actu-card__link">Lire →</a>
+          </div>
         </article>
 
-        <article class="actu-card" data-aos>
-          <div class="actu-card__tag">Social</div>
-          <time class="actu-card__date">5 janvier 2025</time>
-          <h3 class="actu-card__title">
-            Nouvelles obligations en matière de télétravail : guide pratique pour les employeurs
-          </h3>
-          <a href="#actualites" class="actu-card__link">Lire l'article →</a>
+        <article class="actu-card">
+          <img
+            src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=600&q=80"
+            alt="Arbitrage CCJA"
+            class="actu-card__img actu-card__img--sm"
+            loading="lazy"
+          />
+          <div class="actu-card__body">
+            <span class="actu-card__tag">Arbitrage</span>
+            <time>5 décembre 2024</time>
+            <h3>CCJA : notre cabinet obtient gain de cause dans un litige transfrontalier majeur</h3>
+            <a href="#" class="actu-card__link">Lire →</a>
+          </div>
         </article>
-
       </div>
     </div>
   </section>
 
-  <!-- ===== TÉMOIGNAGES ===== -->
+  <!-- ═══ TÉMOIGNAGES ═══ -->
   <section class="temoignages">
     <div class="container">
-      <div class="section-label">Ils nous font confiance</div>
-      <div class="temoignages__slider" id="slider">
-        <div class="temoignage active">
-          <blockquote class="temoignage__quote">
-            "DS Avocats nous a accompagnés avec une réactivité et une expertise remarquables lors de notre acquisition en Asie du Sud-Est. Une équipe véritablement internationale."
-          </blockquote>
-          <div class="temoignage__author">
-            <strong>Jean-Pierre Moreau</strong>
-            <span>Directeur Général, Groupe Meridian</span>
+      <div class="section-label">Ce que disent nos clients</div>
+      <h2 class="section-title">La confiance de nos<br /><em>partenaires</em></h2>
+
+      <div class="swiper temoignages-swiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <div class="temoignage-card">
+              <div class="temoignage-card__stars">★★★★★</div>
+              <blockquote>"Le cabinet NASSOUR MAHAMAT nous a accompagnés avec une expertise remarquable lors de notre implantation au Tchad. Réactivité, compétence et disponibilité — une équipe hors pair."</blockquote>
+              <div class="temoignage-card__author">
+                <div class="temoignage-card__avatar">DK</div>
+                <div>
+                  <strong>Directeur Général</strong>
+                  <span>Groupe industriel international, N'Djamena</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="temoignage-card">
+              <div class="temoignage-card__stars">★★★★★</div>
+              <blockquote>"Dans notre litige commercial complexe devant la CCJA, l'équipe a fait preuve d'une maîtrise technique exceptionnelle. Leur connaissance du droit OHADA est indéniable."</blockquote>
+              <div class="temoignage-card__author">
+                <div class="temoignage-card__avatar">MA</div>
+                <div>
+                  <strong>PDG</strong>
+                  <span>Entreprise de BTP, République du Tchad</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="temoignage-card">
+              <div class="temoignage-card__stars">★★★★★</div>
+              <blockquote>"Maître Fatimé Oumar a sécurisé toute notre politique RH et nous a évité plusieurs litiges prud'homaux. Un investissement qui en vaut la peine."</blockquote>
+              <div class="temoignage-card__author">
+                <div class="temoignage-card__avatar">SB</div>
+                <div>
+                  <strong>Directrice des Ressources Humaines</strong>
+                  <span>Société pétrolière, Doba</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="temoignage">
-          <blockquote class="temoignage__quote">
-            "Un cabinet qui allie parfaitement expertise technique pointue et sens aigu du business. Nos partenaires juridiques de référence depuis 10 ans."
-          </blockquote>
-          <div class="temoignage__author">
-            <strong>Claire Vidal</strong>
-            <span>DRH, Technova SAS</span>
-          </div>
-        </div>
-        <div class="temoignage">
-          <blockquote class="temoignage__quote">
-            "La qualité des conseils reçus et la disponibilité des équipes de DS Avocats ont été déterminantes dans le succès de notre restructuration internationale."
-          </blockquote>
-          <div class="temoignage__author">
-            <strong>Ahmed Benali</strong>
-            <span>PDG, Atlantic Holdings</span>
-          </div>
-        </div>
-      </div>
-      <div class="temoignages__dots">
-        <button class="dot active" data-index="0"></button>
-        <button class="dot" data-index="1"></button>
-        <button class="dot" data-index="2"></button>
+        <div class="swiper-pagination"></div>
       </div>
     </div>
   </section>
 
-  <!-- ===== CONTACT ===== -->
+  <!-- ═══ CONTACT ═══ -->
   <section class="contact" id="contact">
     <div class="container contact__grid">
-      <div class="contact__info" data-aos>
-        <div class="section-label">Contactez-nous</div>
+      <div class="contact__left">
+        <div class="section-label">Nous contacter</div>
         <h2 class="section-title">Parlons de<br /><em>votre projet</em></h2>
-        <p class="contact__text">
-          Nos équipes sont disponibles pour répondre à vos questions et vous accompagner
-          dans vos projets juridiques les plus ambitieux.
+        <p class="contact__intro">
+          Nos avocats sont disponibles pour une première consultation confidentielle.
+          Prenez rendez-vous dès aujourd'hui.
         </p>
-        <div class="contact__details">
-          <div class="contact__detail">
-            <span class="contact__detail-icon">📍</span>
+
+        <div class="contact__infos">
+          <div class="contact__info-item">
+            <div class="contact__info-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
             <div>
-              <strong>Siège social</strong>
-              <p>12, avenue de Messine<br />75008 Paris, France</p>
+              <strong>Siège</strong>
+              <p>Avenue Charles de Gaulle, BP 1234<br />N'Djamena, République du Tchad</p>
             </div>
           </div>
-          <div class="contact__detail">
-            <span class="contact__detail-icon">📞</span>
+          <div class="contact__info-item">
+            <div class="contact__info-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.59 1H6.6a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.54a16 16 0 0 0 6 6l.91-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16l.2.92z"/></svg>
+            </div>
             <div>
               <strong>Téléphone</strong>
-              <p>+33 (0)1 44 76 87 00</p>
+              <p>+235 66 00 00 00<br />+235 22 00 00 00</p>
             </div>
           </div>
-          <div class="contact__detail">
-            <span class="contact__detail-icon">✉</span>
+          <div class="contact__info-item">
+            <div class="contact__info-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
             <div>
               <strong>Email</strong>
-              <p>contact@dsavocats.com</p>
+              <p>contact@nassourmahamat-avocats.td</p>
+            </div>
+          </div>
+          <div class="contact__info-item">
+            <div class="contact__info-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div>
+              <strong>Horaires</strong>
+              <p>Lundi – Vendredi : 8h00 – 18h00<br />Samedi : 9h00 – 13h00</p>
             </div>
           </div>
         </div>
       </div>
-      <div class="contact__form-wrap" data-aos>
-        <form class="contact-form" id="contactForm">
+
+      <div class="contact__right">
+        <form class="contact-form" id="contactForm" novalidate>
           <div class="form-row">
             <div class="form-group">
-              <label for="prenom">Prénom</label>
+              <label for="prenom">Prénom *</label>
               <input type="text" id="prenom" name="prenom" placeholder="Votre prénom" required />
             </div>
             <div class="form-group">
-              <label for="nom">Nom</label>
+              <label for="nom">Nom *</label>
               <input type="text" id="nom" name="nom" placeholder="Votre nom" required />
             </div>
           </div>
           <div class="form-group">
-            <label for="email">Email</label>
+            <label for="email">Email *</label>
             <input type="email" id="email" name="email" placeholder="votre@email.com" required />
           </div>
           <div class="form-group">
-            <label for="societe">Société</label>
-            <input type="text" id="societe" name="societe" placeholder="Votre société" />
+            <label for="tel">Téléphone</label>
+            <input type="tel" id="tel" name="tel" placeholder="+235 XX XX XX XX" />
           </div>
           <div class="form-group">
-            <label for="expertise">Domaine d'expertise</label>
-            <select id="expertise" name="expertise">
+            <label for="domaine">Domaine juridique</label>
+            <select id="domaine" name="domaine">
               <option value="">Sélectionner un domaine</option>
+              <option>Droit OHADA</option>
               <option>Droit des sociétés</option>
-              <option>Fusions-Acquisitions</option>
+              <option>Contentieux & Arbitrage</option>
               <option>Droit fiscal</option>
               <option>Droit social</option>
-              <option>Contentieux</option>
+              <option>Droit minier & pétrolier</option>
               <option>Droit immobilier</option>
-              <option>Droit international</option>
+              <option>Fusions-Acquisitions</option>
               <option>Autre</option>
             </select>
           </div>
           <div class="form-group">
-            <label for="message">Message</label>
-            <textarea id="message" name="message" rows="5" placeholder="Décrivez votre besoin..." required></textarea>
+            <label for="message">Votre message *</label>
+            <textarea id="message" name="message" rows="5" placeholder="Décrivez brièvement votre situation juridique..." required></textarea>
           </div>
-          <button type="submit" class="btn btn--gold btn--full">Envoyer le message</button>
+          <button type="submit" class="btn btn--gold btn--full" id="submitBtn">
+            <span>Envoyer la demande</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+          <p class="form-note">* Consultation confidentielle · Réponse sous 24h ouvrées</p>
         </form>
       </div>
     </div>
   </section>
 
-  <!-- ===== FOOTER ===== -->
+  <!-- ═══ FOOTER ═══ -->
   <footer class="footer">
+    <div class="footer__deco"></div>
     <div class="footer__top">
-      <div class="container footer__top-inner">
+      <div class="container footer__grid">
         <div class="footer__brand">
-          <a href="#" class="footer__logo">
-            <span class="logo-ds">DS</span>
-            <span class="logo-avocats">AVOCATS</span>
-          </a>
-          <p class="footer__tagline">
-            Cabinet d'avocats international en droit des affaires.<br />
-            Fondé en 1972, présent dans 28 bureaux à travers le monde.
-          </p>
+          <div class="footer__logo">
+            <div class="logo-monogram">NM</div>
+            <div class="logo-text">
+              <span class="logo-name">NASSOUR MAHAMAT</span>
+              <span class="logo-sub">& Associés · Avocats</span>
+            </div>
+          </div>
+          <p class="footer__desc">Cabinet d'avocats de référence en République du Tchad. Experts en droit OHADA, droit des affaires et contentieux depuis 1999.</p>
           <div class="footer__socials">
-            <a href="#" class="footer__social" aria-label="LinkedIn">in</a>
-            <a href="#" class="footer__social" aria-label="Twitter">𝕏</a>
+            <a href="#" class="footer__social-btn" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+            <a href="#" class="footer__social-btn" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </a>
+            <a href="#" class="footer__social-btn" aria-label="WhatsApp">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+            </a>
           </div>
         </div>
 
         <div class="footer__col">
           <h4>Expertises</h4>
           <ul>
+            <li><a href="#expertises">Droit OHADA</a></li>
             <li><a href="#expertises">Droit des sociétés</a></li>
-            <li><a href="#expertises">Fusions-Acquisitions</a></li>
+            <li><a href="#expertises">Contentieux</a></li>
             <li><a href="#expertises">Droit fiscal</a></li>
             <li><a href="#expertises">Droit social</a></li>
-            <li><a href="#expertises">Contentieux</a></li>
+            <li><a href="#expertises">Droit pétrolier</a></li>
             <li><a href="#expertises">Droit immobilier</a></li>
           </ul>
         </div>
 
         <div class="footer__col">
-          <h4>Bureaux</h4>
+          <h4>Le Cabinet</h4>
           <ul>
-            <li><a href="#bureaux">Paris</a></li>
-            <li><a href="#bureaux">Lyon</a></li>
-            <li><a href="#bureaux">Casablanca</a></li>
-            <li><a href="#bureaux">Singapour</a></li>
-            <li><a href="#bureaux">New York</a></li>
-            <li><a href="#bureaux">Bruxelles</a></li>
+            <li><a href="#about">Notre histoire</a></li>
+            <li><a href="#equipe">Notre équipe</a></li>
+            <li><a href="#actualites">Actualités</a></li>
+            <li><a href="#">Rejoindre le cabinet</a></li>
+            <li><a href="#contact">Contact</a></li>
           </ul>
         </div>
 
         <div class="footer__col">
-          <h4>Le cabinet</h4>
+          <h4>Contact</h4>
           <ul>
-            <li><a href="#about">À propos</a></li>
-            <li><a href="#equipe">Notre équipe</a></li>
-            <li><a href="#actualites">Actualités</a></li>
-            <li><a href="#contact">Contact</a></li>
-            <li><a href="#">Rejoindre DS Avocats</a></li>
+            <li>Avenue Charles de Gaulle</li>
+            <li>N'Djamena, Tchad</li>
+            <li><a href="tel:+23566000000">+235 66 00 00 00</a></li>
+            <li><a href="mailto:contact@nassourmahamat-avocats.td">contact@nassourmahamat<br/>-avocats.td</a></li>
           </ul>
+          <div class="footer__barreau">
+            <span>Membre du Barreau du Tchad</span>
+          </div>
         </div>
       </div>
     </div>
+
     <div class="footer__bottom">
       <div class="container footer__bottom-inner">
-        <p>© 2025 DS Avocats — Tous droits réservés</p>
-        <div class="footer__legal">
+        <p>© 2025 Cabinet NASSOUR MAHAMAT & Associés — Tous droits réservés · N'Djamena, Tchad</p>
+        <div class="footer__legal-links">
           <a href="#">Mentions légales</a>
-          <a href="#">Politique de confidentialité</a>
-          <a href="#">Cookies</a>
+          <a href="#">Confidentialité</a>
+          <a href="#">Déontologie</a>
         </div>
       </div>
     </div>
   </footer>
 
-  <a href="#accueil" class="back-to-top" id="backToTop" aria-label="Retour en haut">↑</a>
+  <!-- ═══ MODAL VIDÉO ═══ -->
+  <div class="video-modal" id="videoModal">
+    <div class="video-modal__backdrop" id="modalBackdrop"></div>
+    <div class="video-modal__box">
+      <button class="video-modal__close" id="modalClose">✕</button>
+      <div class="video-modal__placeholder">
+        <div class="video-modal__play-icon">▶</div>
+        <p>Vidéo de présentation du Cabinet</p>
+        <span>NASSOUR MAHAMAT & Associés · N'Djamena</span>
+      </div>
+    </div>
+  </div>
 
+  <!-- Back to top -->
+  <a href="#accueil" class="back-top" id="backTop" aria-label="Retour en haut">↑</a>
+
+  <!-- Scripts CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Typed.js/2.0.12/typed.min.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
