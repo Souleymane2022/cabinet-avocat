@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com data:; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; connect-src 'self' ws://localhost:3001 http://localhost:3001 ws://*:3001 http://*:3001;">
+    <title>CFORI - Consulting | Gestion Interne</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        @keyframes toastOut {
+            to { opacity: 0; transform: translateX(50px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-logo">
+                <div class="sidebar-logo-icon">🏛️</div>
+                <div class="sidebar-logo-text">
+                    <div class="name">CFORI</div>
+                    <div class="tagline">Consulting</div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav" id="sidebarNav">
+                <div class="nav-section-title">Principal</div>
+
+                <div class="nav-item active" data-module="dashboard" data-tooltip="Tableau de bord">
+                    <span class="nav-icon">🏠</span>
+                    <span class="nav-label">Tableau de bord</span>
+                </div>
+
+                <div class="nav-item" data-module="planning" data-tooltip="Planning">
+                    <span class="nav-icon">📅</span>
+                    <span class="nav-label">Planning & Agenda</span>
+                </div>
+
+                <div class="nav-section-title">Gestion</div>
+
+                <div class="nav-item" data-module="formations" data-tooltip="Formations">
+                    <span class="nav-icon">🎓</span>
+                    <span class="nav-label">Formations</span>
+                </div>
+
+                <div class="nav-item" data-module="participants" data-tooltip="Participants">
+                    <span class="nav-icon">👥</span>
+                    <span class="nav-label">Participants</span>
+                </div>
+
+                <div class="nav-item" data-module="clients" data-tooltip="Clients">
+                    <span class="nav-icon">🤝</span>
+                    <span class="nav-label">Clients & Dossiers</span>
+                </div>
+
+                <div class="nav-item" data-module="archives" data-tooltip="Archives">
+                    <span class="nav-icon">📁</span>
+                    <span class="nav-label">Archives</span>
+                </div>
+
+                <div class="nav-section-title">Finance & Rapports</div>
+
+                <div class="nav-item" data-module="comptabilite" data-tooltip="Comptabilité">
+                    <span class="nav-icon">💰</span>
+                    <span class="nav-label">Comptabilité</span>
+                </div>
+
+                <div class="nav-item" data-module="rapports" data-tooltip="Rapports PDF">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-label">Rapports PDF</span>
+                </div>
+
+                <div class="nav-section-title">Système</div>
+
+                <div class="nav-item dg-only" data-module="parametres" data-tooltip="Paramètres" id="navParametres">
+                    <span class="nav-icon">⚙️</span>
+                    <span class="nav-label">Paramètres</span>
+                </div>
+            </nav>
+
+            <div class="sidebar-toggle">
+                <button class="btn-toggle" id="btnToggleSidebar">
+                    <span>◀</span>
+                    <span class="btn-toggle-text">Réduire</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- ZONE PRINCIPALE -->
+        <div class="main-area">
+            <!-- TOPBAR -->
+            <div class="topbar">
+                <div class="topbar-left">
+                    <div class="breadcrumb">
+                        <span>CFORI</span>
+                        <span class="breadcrumb-sep">›</span>
+                        <span id="breadcrumbCurrent">Tableau de bord</span>
+                    </div>
+                </div>
+
+                <div class="topbar-right">
+                    <!-- Indicateur de synchronisation -->
+                    <div class="sync-indicator" id="syncIndicator" title="Synchronisation réseau local">
+                        <div class="sync-dot" id="syncDot"></div>
+                        <span id="syncStatus">Hors ligne</span>
+                    </div>
+
+                    <!-- Informations utilisateur -->
+                    <div class="user-info">
+                        <div class="user-avatar" id="userAvatar">?</div>
+                        <div class="user-details">
+                            <div class="user-name" id="userName">Chargement...</div>
+                            <div class="user-role" id="userRole">...</div>
+                        </div>
+                    </div>
+
+                    <!-- Bouton déconnexion -->
+                    <button class="btn-logout" id="btnLogout">
+                        <span>↩</span> Déconnexion
+                    </button>
+                </div>
+            </div>
+
+            <!-- CONTENU -->
+            <div class="content-area" id="contentArea">
+                <div class="loading-overlay">
+                    <div class="loader"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENEUR DE TOASTS -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Bibliothèques externes -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.0/socket.io.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.0/jspdf.plugin.autotable.min.js"></script>
+
+    <!-- SCRIPTS -->
+    <script src="js/auth.js"></script>
+    <script src="js/router.js"></script>
+    <script src="js/sync.js"></script>
+
+    <!-- Modules -->
+    <script src="js/modules/dashboard.js"></script>
+    <script src="js/modules/formations.js"></script>
+    <script src="js/modules/participants.js"></script>
+    <script src="js/modules/clients.js"></script>
+    <script src="js/modules/planning.js"></script>
+    <script src="js/modules/archives.js"></script>
+    <script src="js/modules/comptabilite.js"></script>
+    <script src="js/modules/rapports.js"></script>
+    <script src="js/modules/parametres.js"></script>
+
+    <script>
+    // ============================================================
+    // INITIALISATION DE L'APPLICATION
+    // ============================================================
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        // Vérifier la session
+        if (!Auth.init()) return;
+
+        const user = Auth.getUser();
+
+        // Mettre à jour l'interface avec les infos utilisateur
+        document.getElementById('userAvatar').textContent = Auth.getUserInitials();
+        document.getElementById('userName').textContent = `${user.prenom} ${user.nom}`;
+        document.getElementById('userRole').textContent = user.role === 'DG' ? 'Directeur Général' : 'Secrétaire';
+
+        // Masquer les éléments DG seulement pour les Secrétaires
+        if (!Auth.isDG()) {
+            document.querySelectorAll('.dg-only').forEach(el => el.style.display = 'none');
+        }
+
+        // Navigation sidebar
+        document.querySelectorAll('.nav-item[data-module]').forEach(item => {
+            item.addEventListener('click', () => {
+                const module = item.dataset.module;
+                Router.navigate(module);
+            });
+        });
+
+        // Toggle sidebar
+        const sidebar = document.getElementById('sidebar');
+        document.getElementById('btnToggleSidebar').addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+        });
+
+        // Déconnexion
+        document.getElementById('btnLogout').addEventListener('click', () => {
+            Modal.confirm('Voulez-vous vous déconnecter ?', () => {
+                Auth.logout();
+            });
+        });
+
+        // Enregistrer tous les modules
+        Router.register('dashboard', DashboardModule);
+        Router.register('formations', FormationsModule);
+        Router.register('participants', ParticipantsModule);
+        Router.register('clients', ClientsModule);
+        Router.register('planning', PlanningModule);
+        Router.register('archives', ArchivesModule);
+        Router.register('comptabilite', ComptabiliteModule);
+        Router.register('rapports', RapportsModule);
+        Router.register('parametres', ParametresModule);
+
+        // Initialiser le module de synchronisation
+        SyncClient.init(user);
+
+        // Naviguer vers le tableau de bord par défaut
+        await Router.navigate('dashboard');
+    });
+    </script>
+</body>
+</html>
