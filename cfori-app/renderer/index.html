@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline';">
+    <title>CFORI - Consulting | Connexion</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #01696f;
+            --primary-dark: #015457;
+            --primary-light: #e8f5f5;
+            --secondary: #4a4a8a;
+            --accent: #7b68ee;
+            --bg: #f7f6f2;
+            --text: #28251d;
+            --text-light: #6b7280;
+            --white: #ffffff;
+            --error: #ef4444;
+            --success: #10b981;
+            --border: #e5e7eb;
+            --shadow: 0 4px 24px rgba(1,105,111,0.12);
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #01696f 0%, #4a4a8a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+        }
+
+        .login-container {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 48px 40px;
+            width: 420px;
+            max-width: 95vw;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .logo-circle {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 20px;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            box-shadow: 0 8px 24px rgba(1,105,111,0.3);
+        }
+
+        .app-name {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
+
+        .app-tagline {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 4px;
+            line-height: 1.5;
+        }
+
+        .app-subtitle {
+            font-size: 13px;
+            color: var(--secondary);
+            font-weight: 500;
+            margin-top: 8px;
+            padding: 6px 12px;
+            background: rgba(74,74,138,0.08);
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .login-form h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            color: var(--text);
+            background: #fafafa;
+            transition: all 0.2s;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+            background: var(--white);
+            box-shadow: 0 0 0 4px rgba(1,105,111,0.1);
+        }
+
+        .form-group input.error {
+            border-color: var(--error);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-login:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(1,105,111,0.35); }
+        .btn-login:active { transform: translateY(0); }
+        .btn-login:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+        .btn-login .spinner {
+            display: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .error-message {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: var(--error);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-top: 16px;
+            display: none;
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 28px;
+            font-size: 11px;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .footer-text strong { color: var(--primary); }
+
+        /* Modal changement mot de passe */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            display: none;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal {
+            background: white;
+            border-radius: 16px;
+            padding: 36px;
+            width: 400px;
+            max-width: 95vw;
+        }
+
+        .modal h3 {
+            font-size: 18px;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .modal p { font-size: 13px; color: var(--text-light); margin-bottom: 24px; }
+
+        .btn-primary {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+        .btn-primary:hover { background: var(--primary-dark); }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo-section">
+            <div class="logo-circle">🏛️</div>
+            <div class="app-name">CFORI - Consulting</div>
+            <div class="app-tagline">Conseils • Formations • Orientations • Insertions</div>
+            <div class="app-subtitle">Système de Gestion Interne</div>
+        </div>
+
+        <form class="login-form" id="loginForm">
+            <h2>Connexion</h2>
+
+            <div class="form-group">
+                <label for="email">Adresse e-mail</label>
+                <input type="email" id="email" placeholder="votre@email.com" autocomplete="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" required>
+            </div>
+
+            <button type="submit" class="btn-login" id="btnLogin">
+                <span id="btnText">Se connecter</span>
+                <div class="spinner" id="spinner"></div>
+            </button>
+
+            <div class="error-message" id="errorMsg"></div>
+        </form>
+
+        <div class="footer-text">
+            <strong>Réseau International CFORI</strong><br>
+            la solution contemporaine<br>
+            © 2025 CFORI - Tous droits réservés
+        </div>
+    </div>
+
+    <!-- Modal première connexion -->
+    <div class="modal-overlay" id="firstLoginModal">
+        <div class="modal">
+            <h3>🔐 Première connexion</h3>
+            <p>Pour sécuriser votre compte, veuillez changer votre mot de passe par défaut.</p>
+
+            <div class="form-group">
+                <label>Nouveau mot de passe</label>
+                <input type="password" id="newPassword" placeholder="Nouveau mot de passe (min. 8 caractères)">
+            </div>
+
+            <div class="form-group">
+                <label>Confirmer le mot de passe</label>
+                <input type="password" id="confirmPassword" placeholder="Confirmer le nouveau mot de passe">
+            </div>
+
+            <div class="error-message" id="pwdError"></div>
+
+            <button class="btn-primary" id="btnChangePwd">Changer le mot de passe</button>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let isFirstLogin = false;
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('errorMsg');
+            const btnLogin = document.getElementById('btnLogin');
+            const btnText = document.getElementById('btnText');
+            const spinner = document.getElementById('spinner');
+
+            // Afficher le chargement
+            btnText.style.display = 'none';
+            spinner.style.display = 'block';
+            btnLogin.disabled = true;
+            errorMsg.style.display = 'none';
+
+            try {
+                const result = await window.cfori.auth.login({ email, password });
+
+                if (result.success) {
+                    currentUser = result.user;
+                    // Stocker en mémoire (session)
+                    sessionStorage.setItem('cfori_user', JSON.stringify(currentUser));
+
+                    // Vérifier si première connexion (admin par défaut)
+                    if (email === 'admin@cfori.td' && password === 'Admin@2025') {
+                        isFirstLogin = true;
+                        document.getElementById('firstLoginModal').classList.add('active');
+                        btnText.style.display = 'block';
+                        spinner.style.display = 'none';
+                        btnLogin.disabled = false;
+                    } else {
+                        // Rediriger vers l'interface principale
+                        window.location.href = 'app.html';
+                    }
+                } else {
+                    errorMsg.textContent = result.message;
+                    errorMsg.style.display = 'block';
+                    btnText.style.display = 'block';
+                    spinner.style.display = 'none';
+                    btnLogin.disabled = false;
+                }
+            } catch (err) {
+                errorMsg.textContent = 'Erreur de connexion. Vérifiez votre installation.';
+                errorMsg.style.display = 'block';
+                btnText.style.display = 'block';
+                spinner.style.display = 'none';
+                btnLogin.disabled = false;
+            }
+        });
+
+        document.getElementById('btnChangePwd').addEventListener('click', async () => {
+            const newPwd = document.getElementById('newPassword').value;
+            const confirmPwd = document.getElementById('confirmPassword').value;
+            const pwdError = document.getElementById('pwdError');
+
+            if (newPwd.length < 8) {
+                pwdError.textContent = 'Le mot de passe doit contenir au moins 8 caractères';
+                pwdError.style.display = 'block';
+                return;
+            }
+            if (newPwd !== confirmPwd) {
+                pwdError.textContent = 'Les mots de passe ne correspondent pas';
+                pwdError.style.display = 'block';
+                return;
+            }
+
+            const result = await window.cfori.auth.changePassword({
+                userId: currentUser.id,
+                oldPassword: 'Admin@2025',
+                newPassword: newPwd
+            });
+
+            if (result.success) {
+                document.getElementById('firstLoginModal').classList.remove('active');
+                window.location.href = 'app.html';
+            } else {
+                pwdError.textContent = result.message;
+                pwdError.style.display = 'block';
+            }
+        });
+
+        // Focus sur l'email au chargement
+        window.addEventListener('load', () => {
+            document.getElementById('email').focus();
+        });
+    </script>
+</body>
+</html>

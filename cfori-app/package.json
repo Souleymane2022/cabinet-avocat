@@ -1,0 +1,39 @@
+{
+  "name": "cfori-app",
+  "version": "1.0.0",
+  "description": "CFORI - Consulting | Système de Gestion Interne",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win",
+    "build:linux": "electron-builder --linux"
+  },
+  "keywords": ["cfori", "consulting", "formations", "gestion"],
+  "author": "CFORI - Conseils Formations Orientations et Insertions",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "sql.js": "^1.12.0",
+    "socket.io": "^4.6.0",
+    "socket.io-client": "^4.6.0"
+  },
+  "devDependencies": {
+    "electron": "^33.0.0"
+  },
+  "build": {
+    "appId": "td.cfori.consulting",
+    "productName": "CFORI Consulting",
+    "win": {
+      "target": "nsis",
+      "icon": "assets/logo.ico"
+    },
+    "linux": {
+      "target": "AppImage"
+    },
+    "files": [
+      "**/*",
+      "!node_modules/.bin",
+      "!**/*.map"
+    ]
+  }
+}
