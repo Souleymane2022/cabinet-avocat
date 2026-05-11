@@ -54,7 +54,8 @@ function dbRunGetId(sql, params) {
 
 async function initDatabase(userDataPath) {
     const initSqlJs = require('sql.js');
-    const SQL = await initSqlJs();
+    const wasmDir = path.join(__dirname, '..', 'node_modules', 'sql.js', 'dist');
+    const SQL = await initSqlJs({ locateFile: file => path.join(wasmDir, file) });
 
     dbFilePath = path.join(userDataPath, 'cfori.db');
     const schemaPath = path.join(__dirname, 'schema.sql');
