@@ -1,5 +1,6 @@
 /**
- * CFORI - Consulting | Initialisation de la base de données SQLite
+ * CFORI - Consulting | Base de données SQLite via sql.js
+ * (pur JavaScript/WebAssembly, aucune compilation C++ requise)
  */
 
 const path = require('path');
@@ -7,31 +8,80 @@ const fs = require('fs');
 const bcrypt = require('bcryptjs');
 
 let db = null;
+let dbFilePath = null;
 
-function initDatabase(userDataPath) {
-    const Database = require('better-sqlite3');
-    const dbPath = path.join(userDataPath, 'cfori.db');
+function saveDb() {
+    if (db && dbFilePath) {
+        const data = db.export();
+        fs.writeFileSync(dbFilePath, Buffer.from(data));
+    }
+}
+
+function dbRun(sql, params) {
+    db.run(sql, params || []);
+    saveDb();
+}
+
+function dbGet(sql, params) {
+    const stmt = db.prepare(sql);
+    if (params && params.length > 0) stmt.bind(params);
+    let result = null;
+    if (stmt.step()) {
+        result = stmt.getAsObject();
+    }
+    stmt.free();
+    return result;
+}
+
+function dbAll(sql, params) {
+    const stmt = db.prepare(sql);
+    if (params && params.length > 0) stmt.bind(params);
+    const rows = [];
+    while (stmt.step()) {
+        rows.push(stmt.getAsObject());
+    }
+    stmt.free();
+    return rows;
+}
+
+function dbRunGetId(sql, params) {
+    db.run(sql, params || []);
+    const idResult = db.exec('SELECT last_insert_rowid()');
+    const id = idResult[0].values[0][0];
+    saveDb();
+    return id;
+}
+
+async function initDatabase(userDataPath) {
+    const initSqlJs = require('sql.js');
+    const SQL = await initSqlJs();
+
+    dbFilePath = path.join(userDataPath, 'cfori.db');
     const schemaPath = path.join(__dirname, 'schema.sql');
 
-    db = new Database(dbPath);
-    db.pragma('foreign_keys = ON');
-    db.pragma('journal_mode = WAL');
+    if (fs.existsSync(dbFilePath)) {
+        const fileBuffer = fs.readFileSync(dbFilePath);
+        db = new SQL.Database(fileBuffer);
+    } else {
+        db = new SQL.Database();
+    }
 
-    // Lire et exécuter le schéma SQL
+    db.run('PRAGMA foreign_keys = ON');
+    db.run('PRAGMA journal_mode = WAL');
+
     const schema = fs.readFileSync(schemaPath, 'utf8');
     db.exec(schema);
 
-    // Créer le compte DG par défaut si aucun utilisateur n'existe
-    const userCount = db.prepare('SELECT COUNT(*) as count FROM users').get();
-    if (userCount.count === 0) {
+    const row = dbGet('SELECT COUNT(*) as count FROM users', []);
+    if (!row || row.count === 0) {
         const hash = bcrypt.hashSync('Admin@2025', 12);
-        db.prepare(`
-            INSERT INTO users (nom, prenom, email, password_hash, role, actif)
-            VALUES ('CFORI', 'Administrateur', 'admin@cfori.td', ?, 'DG', 1)
-        `).run(hash);
+        db.run(
+            'INSERT INTO users (nom, prenom, email, password_hash, role, actif) VALUES (?, ?, ?, ?, ?, ?)',
+            ['CFORI', 'Administrateur', 'admin@cfori.td', hash, 'DG', 1]
+        );
     }
 
-    return db;
+    saveDb();
 }
 
 function getDb() {
@@ -40,29 +90,29 @@ function getDb() {
 }
 
 // ============================================================
-// FONCTIONS UTILISATEURS
+// UTILISATEURS
 // ============================================================
 
 function getUsers() {
-    return getDb().prepare('SELECT id, nom, prenom, email, role, actif, created_at FROM users ORDER BY nom').all();
+    return dbAll('SELECT id, nom, prenom, email, role, actif, created_at FROM users ORDER BY nom', []);
 }
 
 function getUserByEmail(email) {
-    return getDb().prepare('SELECT * FROM users WHERE email = ? AND actif = 1').get(email);
+    return dbGet('SELECT * FROM users WHERE email = ? AND actif = 1', [email]);
 }
 
 function getUserById(id) {
-    return getDb().prepare('SELECT id, nom, prenom, email, role, actif, created_at FROM users WHERE id = ?').get(id);
+    return dbGet('SELECT id, nom, prenom, email, role, actif, created_at FROM users WHERE id = ?', [id]);
 }
 
 function createUser(data, createdBy) {
     const hash = bcrypt.hashSync(data.password, 12);
-    const result = getDb().prepare(`
-        INSERT INTO users (nom, prenom, email, password_hash, role, created_by)
-        VALUES (?, ?, ?, ?, ?, ?)
-    `).run(data.nom, data.prenom, data.email, hash, data.role, createdBy);
-    logAudit(createdBy, 'CREATE_USER', 'users', result.lastInsertRowid);
-    return result.lastInsertRowid;
+    const id = dbRunGetId(
+        'INSERT INTO users (nom, prenom, email, password_hash, role, created_by) VALUES (?, ?, ?, ?, ?, ?)',
+        [data.nom, data.prenom, data.email, hash, data.role, createdBy]
+    );
+    logAudit(createdBy, 'CREATE_USER', 'users', id);
+    return id;
 }
 
 function updateUser(id, data, updatedBy) {
@@ -73,13 +123,10 @@ function updateUser(id, data, updatedBy) {
     if (data.email !== undefined) { setClauses.push('email = ?'); values.push(data.email); }
     if (data.role !== undefined) { setClauses.push('role = ?'); values.push(data.role); }
     if (data.actif !== undefined) { setClauses.push('actif = ?'); values.push(data.actif); }
-    if (data.password) {
-        setClauses.push('password_hash = ?');
-        values.push(bcrypt.hashSync(data.password, 12));
-    }
+    if (data.password) { setClauses.push('password_hash = ?'); values.push(bcrypt.hashSync(data.password, 12)); }
     setClauses.push('updated_at = CURRENT_TIMESTAMP');
     values.push(id);
-    getDb().prepare(`UPDATE users SET ${setClauses.join(', ')} WHERE id = ?`).run(...values);
+    dbRun(`UPDATE users SET ${setClauses.join(', ')} WHERE id = ?`, values);
     logAudit(updatedBy, 'UPDATE_USER', 'users', id);
 }
 
@@ -88,7 +135,7 @@ function verifyPassword(password, hash) {
 }
 
 // ============================================================
-// FONCTIONS FORMATIONS
+// FORMATIONS
 // ============================================================
 
 function getFormations(filters = {}) {
@@ -98,42 +145,42 @@ function getFormations(filters = {}) {
     if (filters.categorie) { query += ' AND f.categorie = ?'; params.push(filters.categorie); }
     if (filters.search) { query += ' AND (f.titre LIKE ? OR f.formateur LIKE ?)'; params.push(`%${filters.search}%`, `%${filters.search}%`); }
     query += ' ORDER BY f.date_debut DESC';
-    return getDb().prepare(query).all(...params);
+    return dbAll(query, params);
 }
 
 function getFormationById(id) {
-    return getDb().prepare('SELECT * FROM formations WHERE id = ?').get(id);
+    return dbGet('SELECT * FROM formations WHERE id = ?', [id]);
 }
 
 function createFormation(data, createdBy) {
-    const result = getDb().prepare(`
-        INSERT INTO formations (titre, description, categorie, duree_heures, date_debut, date_fin, lieu, capacite_max, prix, formateur, statut, created_by)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `).run(data.titre, data.description, data.categorie, data.duree_heures, data.date_debut, data.date_fin, data.lieu, data.capacite_max, data.prix, data.formateur, data.statut || 'planifié', createdBy);
-    logAudit(createdBy, 'CREATE_FORMATION', 'formations', result.lastInsertRowid);
-    return result.lastInsertRowid;
+    const id = dbRunGetId(
+        'INSERT INTO formations (titre, description, categorie, duree_heures, date_debut, date_fin, lieu, capacite_max, prix, formateur, statut, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [data.titre, data.description, data.categorie, data.duree_heures, data.date_debut, data.date_fin, data.lieu, data.capacite_max, data.prix, data.formateur, data.statut || 'planifié', createdBy]
+    );
+    logAudit(createdBy, 'CREATE_FORMATION', 'formations', id);
+    return id;
 }
 
 function updateFormation(id, data, updatedBy) {
-    getDb().prepare(`
-        UPDATE formations SET titre=?, description=?, categorie=?, duree_heures=?, date_debut=?, date_fin=?, lieu=?, capacite_max=?, prix=?, formateur=?, statut=?, updated_at=CURRENT_TIMESTAMP WHERE id=?
-    `).run(data.titre, data.description, data.categorie, data.duree_heures, data.date_debut, data.date_fin, data.lieu, data.capacite_max, data.prix, data.formateur, data.statut, id);
+    dbRun(
+        'UPDATE formations SET titre=?, description=?, categorie=?, duree_heures=?, date_debut=?, date_fin=?, lieu=?, capacite_max=?, prix=?, formateur=?, statut=?, updated_at=CURRENT_TIMESTAMP WHERE id=?',
+        [data.titre, data.description, data.categorie, data.duree_heures, data.date_debut, data.date_fin, data.lieu, data.capacite_max, data.prix, data.formateur, data.statut, id]
+    );
     logAudit(updatedBy, 'UPDATE_FORMATION', 'formations', id);
 }
 
 function deleteFormation(id, deletedBy) {
-    getDb().prepare('DELETE FROM formations WHERE id = ?').run(id);
+    dbRun('DELETE FROM formations WHERE id = ?', [id]);
     logAudit(deletedBy, 'DELETE_FORMATION', 'formations', id);
 }
 
 // ============================================================
-// FONCTIONS PARTICIPANTS
+// PARTICIPANTS
 // ============================================================
 
 function getParticipants(filters = {}) {
     let query = `SELECT p.*, f.titre as formation_titre, u.nom || ' ' || u.prenom as createur
-                 FROM participants p
-                 LEFT JOIN formations f ON p.formation_id = f.id
+                 FROM participants p LEFT JOIN formations f ON p.formation_id = f.id
                  LEFT JOIN users u ON p.created_by = u.id WHERE 1=1`;
     const params = [];
     if (filters.formation_id) { query += ' AND p.formation_id = ?'; params.push(filters.formation_id); }
@@ -143,36 +190,37 @@ function getParticipants(filters = {}) {
         params.push(`%${filters.search}%`, `%${filters.search}%`, `%${filters.search}%`, `%${filters.search}%`);
     }
     query += ' ORDER BY p.nom';
-    return getDb().prepare(query).all(...params);
+    return dbAll(query, params);
 }
 
 function getParticipantById(id) {
-    return getDb().prepare('SELECT * FROM participants WHERE id = ?').get(id);
+    return dbGet('SELECT * FROM participants WHERE id = ?', [id]);
 }
 
 function createParticipant(data, createdBy) {
-    const result = getDb().prepare(`
-        INSERT INTO participants (nom, prenom, email, telephone, organisation, poste, formation_id, statut_paiement, montant_paye, notes, created_by)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `).run(data.nom, data.prenom, data.email, data.telephone, data.organisation, data.poste, data.formation_id, data.statut_paiement || 'en_attente', data.montant_paye || 0, data.notes, createdBy);
-    logAudit(createdBy, 'CREATE_PARTICIPANT', 'participants', result.lastInsertRowid);
-    return result.lastInsertRowid;
+    const id = dbRunGetId(
+        'INSERT INTO participants (nom, prenom, email, telephone, organisation, poste, formation_id, statut_paiement, montant_paye, notes, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [data.nom, data.prenom, data.email, data.telephone, data.organisation, data.poste, data.formation_id, data.statut_paiement || 'en_attente', data.montant_paye || 0, data.notes, createdBy]
+    );
+    logAudit(createdBy, 'CREATE_PARTICIPANT', 'participants', id);
+    return id;
 }
 
 function updateParticipant(id, data, updatedBy) {
-    getDb().prepare(`
-        UPDATE participants SET nom=?, prenom=?, email=?, telephone=?, organisation=?, poste=?, formation_id=?, statut_paiement=?, montant_paye=?, notes=? WHERE id=?
-    `).run(data.nom, data.prenom, data.email, data.telephone, data.organisation, data.poste, data.formation_id, data.statut_paiement, data.montant_paye, data.notes, id);
+    dbRun(
+        'UPDATE participants SET nom=?, prenom=?, email=?, telephone=?, organisation=?, poste=?, formation_id=?, statut_paiement=?, montant_paye=?, notes=? WHERE id=?',
+        [data.nom, data.prenom, data.email, data.telephone, data.organisation, data.poste, data.formation_id, data.statut_paiement, data.montant_paye, data.notes, id]
+    );
     logAudit(updatedBy, 'UPDATE_PARTICIPANT', 'participants', id);
 }
 
 function deleteParticipant(id, deletedBy) {
-    getDb().prepare('DELETE FROM participants WHERE id = ?').run(id);
+    dbRun('DELETE FROM participants WHERE id = ?', [id]);
     logAudit(deletedBy, 'DELETE_PARTICIPANT', 'participants', id);
 }
 
 // ============================================================
-// FONCTIONS CLIENTS
+// CLIENTS
 // ============================================================
 
 function getClients(filters = {}) {
@@ -185,37 +233,38 @@ function getClients(filters = {}) {
         params.push(`%${filters.search}%`, `%${filters.search}%`, `%${filters.search}%`, `%${filters.search}%`, `%${filters.search}%`);
     }
     query += ' ORDER BY nom';
-    return getDb().prepare(query).all(...params);
+    return dbAll(query, params);
 }
 
 function getClientById(id) {
-    return getDb().prepare('SELECT * FROM clients WHERE id = ?').get(id);
+    return dbGet('SELECT * FROM clients WHERE id = ?', [id]);
 }
 
 function createClient(data, createdBy) {
-    const ref = 'DOS-' + Date.now();
-    const result = getDb().prepare(`
-        INSERT INTO clients (nom, prenom, raison_sociale, type_client, email, telephone, adresse, ville, pays, secteur_activite, notes, dossier_ref, statut, created_by)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `).run(data.nom, data.prenom, data.raison_sociale, data.type_client, data.email, data.telephone, data.adresse, data.ville, data.pays || 'Tchad', data.secteur_activite, data.notes, data.dossier_ref || ref, data.statut || 'actif', createdBy);
-    logAudit(createdBy, 'CREATE_CLIENT', 'clients', result.lastInsertRowid);
-    return result.lastInsertRowid;
+    const ref = data.dossier_ref || ('DOS-' + Date.now());
+    const id = dbRunGetId(
+        'INSERT INTO clients (nom, prenom, raison_sociale, type_client, email, telephone, adresse, ville, pays, secteur_activite, notes, dossier_ref, statut, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [data.nom, data.prenom, data.raison_sociale, data.type_client, data.email, data.telephone, data.adresse, data.ville, data.pays || 'Tchad', data.secteur_activite, data.notes, ref, data.statut || 'actif', createdBy]
+    );
+    logAudit(createdBy, 'CREATE_CLIENT', 'clients', id);
+    return id;
 }
 
 function updateClient(id, data, updatedBy) {
-    getDb().prepare(`
-        UPDATE clients SET nom=?, prenom=?, raison_sociale=?, type_client=?, email=?, telephone=?, adresse=?, ville=?, pays=?, secteur_activite=?, notes=?, statut=?, updated_at=CURRENT_TIMESTAMP WHERE id=?
-    `).run(data.nom, data.prenom, data.raison_sociale, data.type_client, data.email, data.telephone, data.adresse, data.ville, data.pays, data.secteur_activite, data.notes, data.statut, id);
+    dbRun(
+        'UPDATE clients SET nom=?, prenom=?, raison_sociale=?, type_client=?, email=?, telephone=?, adresse=?, ville=?, pays=?, secteur_activite=?, notes=?, statut=?, updated_at=CURRENT_TIMESTAMP WHERE id=?',
+        [data.nom, data.prenom, data.raison_sociale, data.type_client, data.email, data.telephone, data.adresse, data.ville, data.pays, data.secteur_activite, data.notes, data.statut, id]
+    );
     logAudit(updatedBy, 'UPDATE_CLIENT', 'clients', id);
 }
 
 function deleteClient(id, deletedBy) {
-    getDb().prepare('DELETE FROM clients WHERE id = ?').run(id);
+    dbRun('DELETE FROM clients WHERE id = ?', [id]);
     logAudit(deletedBy, 'DELETE_CLIENT', 'clients', id);
 }
 
 // ============================================================
-// FONCTIONS DOSSIERS CLIENTS
+// DOSSIERS CLIENTS
 // ============================================================
 
 function getDossiers(clientId = null) {
@@ -224,27 +273,28 @@ function getDossiers(clientId = null) {
     const params = [];
     if (clientId) { query += ' AND d.client_id = ?'; params.push(clientId); }
     query += ' ORDER BY d.created_at DESC';
-    return getDb().prepare(query).all(...params);
+    return dbAll(query, params);
 }
 
 function createDossier(data, createdBy) {
-    const result = getDb().prepare(`
-        INSERT INTO dossiers_clients (client_id, titre, description, type_service, date_ouverture, statut, responsable_id, notes, created_by)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `).run(data.client_id, data.titre, data.description, data.type_service, data.date_ouverture || new Date().toISOString().split('T')[0], data.statut || 'ouvert', data.responsable_id, data.notes, createdBy);
-    logAudit(createdBy, 'CREATE_DOSSIER', 'dossiers_clients', result.lastInsertRowid);
-    return result.lastInsertRowid;
+    const id = dbRunGetId(
+        'INSERT INTO dossiers_clients (client_id, titre, description, type_service, date_ouverture, statut, responsable_id, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        [data.client_id, data.titre, data.description, data.type_service, data.date_ouverture || new Date().toISOString().split('T')[0], data.statut || 'ouvert', data.responsable_id, data.notes]
+    );
+    logAudit(createdBy, 'CREATE_DOSSIER', 'dossiers_clients', id);
+    return id;
 }
 
 function updateDossier(id, data, updatedBy) {
-    getDb().prepare(`
-        UPDATE dossiers_clients SET titre=?, description=?, type_service=?, date_cloture=?, statut=?, responsable_id=?, notes=?, updated_at=CURRENT_TIMESTAMP WHERE id=?
-    `).run(data.titre, data.description, data.type_service, data.date_cloture, data.statut, data.responsable_id, data.notes, id);
+    dbRun(
+        'UPDATE dossiers_clients SET titre=?, description=?, type_service=?, date_cloture=?, statut=?, responsable_id=?, notes=?, updated_at=CURRENT_TIMESTAMP WHERE id=?',
+        [data.titre, data.description, data.type_service, data.date_cloture, data.statut, data.responsable_id, data.notes, id]
+    );
     logAudit(updatedBy, 'UPDATE_DOSSIER', 'dossiers_clients', id);
 }
 
 // ============================================================
-// FONCTIONS PLANNING
+// PLANNING
 // ============================================================
 
 function getPlanningEvents(filters = {}) {
@@ -254,32 +304,33 @@ function getPlanningEvents(filters = {}) {
     if (filters.date_fin) { query += ' AND p.date_debut <= ?'; params.push(filters.date_fin); }
     if (filters.type_evenement) { query += ' AND p.type_evenement = ?'; params.push(filters.type_evenement); }
     query += ' ORDER BY p.date_debut';
-    return getDb().prepare(query).all(...params);
+    return dbAll(query, params);
 }
 
 function createPlanningEvent(data, createdBy) {
-    const result = getDb().prepare(`
-        INSERT INTO planning (titre, description, type_evenement, date_debut, date_fin, lieu, responsable_id, participants_ids, statut, rappel_minutes, couleur, created_by)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `).run(data.titre, data.description, data.type_evenement, data.date_debut, data.date_fin, data.lieu, data.responsable_id, JSON.stringify(data.participants_ids || []), data.statut || 'planifié', data.rappel_minutes || 30, data.couleur || '#01696f', createdBy);
-    logAudit(createdBy, 'CREATE_EVENT', 'planning', result.lastInsertRowid);
-    return result.lastInsertRowid;
+    const id = dbRunGetId(
+        'INSERT INTO planning (titre, description, type_evenement, date_debut, date_fin, lieu, responsable_id, participants_ids, statut, rappel_minutes, couleur, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [data.titre, data.description, data.type_evenement, data.date_debut, data.date_fin, data.lieu, data.responsable_id, JSON.stringify(data.participants_ids || []), data.statut || 'planifié', data.rappel_minutes || 30, data.couleur || '#01696f', createdBy]
+    );
+    logAudit(createdBy, 'CREATE_EVENT', 'planning', id);
+    return id;
 }
 
 function updatePlanningEvent(id, data, updatedBy) {
-    getDb().prepare(`
-        UPDATE planning SET titre=?, description=?, type_evenement=?, date_debut=?, date_fin=?, lieu=?, responsable_id=?, participants_ids=?, statut=?, rappel_minutes=?, couleur=? WHERE id=?
-    `).run(data.titre, data.description, data.type_evenement, data.date_debut, data.date_fin, data.lieu, data.responsable_id, JSON.stringify(data.participants_ids || []), data.statut, data.rappel_minutes, data.couleur, id);
+    dbRun(
+        'UPDATE planning SET titre=?, description=?, type_evenement=?, date_debut=?, date_fin=?, lieu=?, responsable_id=?, participants_ids=?, statut=?, rappel_minutes=?, couleur=? WHERE id=?',
+        [data.titre, data.description, data.type_evenement, data.date_debut, data.date_fin, data.lieu, data.responsable_id, JSON.stringify(data.participants_ids || []), data.statut, data.rappel_minutes, data.couleur, id]
+    );
     logAudit(updatedBy, 'UPDATE_EVENT', 'planning', id);
 }
 
 function deletePlanningEvent(id, deletedBy) {
-    getDb().prepare('DELETE FROM planning WHERE id = ?').run(id);
+    dbRun('DELETE FROM planning WHERE id = ?', [id]);
     logAudit(deletedBy, 'DELETE_EVENT', 'planning', id);
 }
 
 // ============================================================
-// FONCTIONS ARCHIVES
+// ARCHIVES
 // ============================================================
 
 function getArchives(filters = {}) {
@@ -293,26 +344,26 @@ function getArchives(filters = {}) {
         params.push(`%${filters.search}%`, `%${filters.search}%`, `%${filters.search}%`);
     }
     query += ' ORDER BY a.created_at DESC';
-    return getDb().prepare(query).all(...params);
+    return dbAll(query, params);
 }
 
 function createArchive(data, createdBy) {
-    const ref = 'ARC-' + Date.now();
-    const result = getDb().prepare(`
-        INSERT INTO archives (titre, description, categorie, type_document, fichier_nom, fichier_path, fichier_taille, date_document, reference, tags, client_id, formation_id, confidentiel, created_by)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `).run(data.titre, data.description, data.categorie, data.type_document, data.fichier_nom, data.fichier_path, data.fichier_taille || 0, data.date_document, data.reference || ref, data.tags, data.client_id, data.formation_id, data.confidentiel || 0, createdBy);
-    logAudit(createdBy, 'CREATE_ARCHIVE', 'archives', result.lastInsertRowid);
-    return result.lastInsertRowid;
+    const ref = data.reference || ('ARC-' + Date.now());
+    const id = dbRunGetId(
+        'INSERT INTO archives (titre, description, categorie, type_document, fichier_nom, fichier_path, fichier_taille, date_document, reference, tags, client_id, formation_id, confidentiel, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [data.titre, data.description, data.categorie, data.type_document, data.fichier_nom, data.fichier_path, data.fichier_taille || 0, data.date_document, ref, data.tags, data.client_id, data.formation_id, data.confidentiel || 0, createdBy]
+    );
+    logAudit(createdBy, 'CREATE_ARCHIVE', 'archives', id);
+    return id;
 }
 
 function deleteArchive(id, deletedBy) {
-    getDb().prepare('DELETE FROM archives WHERE id = ?').run(id);
+    dbRun('DELETE FROM archives WHERE id = ?', [id]);
     logAudit(deletedBy, 'DELETE_ARCHIVE', 'archives', id);
 }
 
 // ============================================================
-// FONCTIONS TRANSACTIONS
+// TRANSACTIONS
 // ============================================================
 
 function getTransactions(filters = {}) {
@@ -325,106 +376,94 @@ function getTransactions(filters = {}) {
     if (filters.date_fin) { query += ' AND t.date_transaction <= ?'; params.push(filters.date_fin); }
     if (filters.categorie) { query += ' AND t.categorie = ?'; params.push(filters.categorie); }
     query += ' ORDER BY t.date_transaction DESC';
-    return getDb().prepare(query).all(...params);
+    return dbAll(query, params);
 }
 
 function createTransaction(data, createdBy) {
-    const result = getDb().prepare(`
-        INSERT INTO transactions (type_transaction, categorie, montant, devise, description, reference_externe, date_transaction, mode_paiement, client_id, formation_id, statut, piece_justificative, created_by)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `).run(data.type_transaction, data.categorie, data.montant, data.devise || 'XAF', data.description, data.reference_externe, data.date_transaction || new Date().toISOString().split('T')[0], data.mode_paiement, data.client_id, data.formation_id, data.statut || 'en_attente', data.piece_justificative, createdBy);
-    logAudit(createdBy, 'CREATE_TRANSACTION', 'transactions', result.lastInsertRowid);
-    return result.lastInsertRowid;
+    const id = dbRunGetId(
+        'INSERT INTO transactions (type_transaction, categorie, montant, devise, description, reference_externe, date_transaction, mode_paiement, client_id, formation_id, statut, piece_justificative, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [data.type_transaction, data.categorie, data.montant, data.devise || 'XAF', data.description, data.reference_externe, data.date_transaction || new Date().toISOString().split('T')[0], data.mode_paiement, data.client_id, data.formation_id, data.statut || 'en_attente', data.piece_justificative, createdBy]
+    );
+    logAudit(createdBy, 'CREATE_TRANSACTION', 'transactions', id);
+    return id;
 }
 
 function updateTransactionStatut(id, statut, updatedBy) {
-    getDb().prepare('UPDATE transactions SET statut = ? WHERE id = ?').run(statut, id);
+    dbRun('UPDATE transactions SET statut = ? WHERE id = ?', [statut, id]);
     logAudit(updatedBy, 'UPDATE_TRANSACTION_STATUT', 'transactions', id);
 }
 
 function getSoldeGlobal() {
-    const result = getDb().prepare(`
+    const result = dbGet(`
         SELECT
             SUM(CASE WHEN type_transaction = 'recette' AND statut = 'validé' THEN montant ELSE 0 END) as total_recettes,
             SUM(CASE WHEN type_transaction = 'depense' AND statut = 'validé' THEN montant ELSE 0 END) as total_depenses
         FROM transactions
-    `).get();
+    `, []);
     return {
-        recettes: result.total_recettes || 0,
-        depenses: result.total_depenses || 0,
-        solde: (result.total_recettes || 0) - (result.total_depenses || 0)
+        recettes: result ? (result.total_recettes || 0) : 0,
+        depenses: result ? (result.total_depenses || 0) : 0,
+        solde: result ? ((result.total_recettes || 0) - (result.total_depenses || 0)) : 0
     };
 }
 
 function getStatsParMois(mois = 6) {
-    return getDb().prepare(`
+    return dbAll(`
         SELECT
             strftime('%Y-%m', date_transaction) as mois,
             SUM(CASE WHEN type_transaction = 'recette' THEN montant ELSE 0 END) as recettes,
             SUM(CASE WHEN type_transaction = 'depense' THEN montant ELSE 0 END) as depenses
         FROM transactions
         WHERE date_transaction >= date('now', '-${mois} months') AND statut = 'validé'
-        GROUP BY mois
-        ORDER BY mois
-    `).all();
+        GROUP BY mois ORDER BY mois
+    `, []);
 }
 
 // ============================================================
-// FONCTIONS RAPPORTS
+// RAPPORTS
 // ============================================================
 
 function logRapport(data, generePar) {
-    const result = getDb().prepare(`
-        INSERT INTO rapports_logs (type_rapport, titre, parametres, genere_par, fichier_path)
-        VALUES (?, ?, ?, ?, ?)
-    `).run(data.type_rapport, data.titre, JSON.stringify(data.parametres || {}), generePar, data.fichier_path);
-    return result.lastInsertRowid;
+    const id = dbRunGetId(
+        'INSERT INTO rapports_logs (type_rapport, titre, parametres, genere_par, fichier_path) VALUES (?, ?, ?, ?, ?)',
+        [data.type_rapport, data.titre, JSON.stringify(data.parametres || {}), generePar, data.fichier_path]
+    );
+    return id;
 }
 
 // ============================================================
-// FONCTIONS TABLEAU DE BORD
+// TABLEAU DE BORD
 // ============================================================
 
 function getDashboardStats() {
-    const db = getDb();
-    const formations_actives = db.prepare("SELECT COUNT(*) as count FROM formations WHERE statut IN ('planifié','en_cours')").get().count;
-    const participants_mois = db.prepare("SELECT COUNT(*) as count FROM participants WHERE strftime('%Y-%m', date_inscription) = strftime('%Y-%m', 'now')").get().count;
-    const clients_actifs = db.prepare("SELECT COUNT(*) as count FROM clients WHERE statut = 'actif'").get().count;
+    const formations_actives = (dbGet("SELECT COUNT(*) as count FROM formations WHERE statut IN ('planifié','en_cours')", []) || {}).count || 0;
+    const participants_mois = (dbGet("SELECT COUNT(*) as count FROM participants WHERE strftime('%Y-%m', date_inscription) = strftime('%Y-%m', 'now')", []) || {}).count || 0;
+    const clients_actifs = (dbGet("SELECT COUNT(*) as count FROM clients WHERE statut = 'actif'", []) || {}).count || 0;
     const solde = getSoldeGlobal();
-    const prochains_evenements = db.prepare("SELECT * FROM planning WHERE date_debut >= datetime('now') AND statut != 'annulé' ORDER BY date_debut LIMIT 5").all();
+    const prochains_evenements = dbAll("SELECT * FROM planning WHERE date_debut >= datetime('now') AND statut != 'annulé' ORDER BY date_debut LIMIT 5", []);
     const stats_mois = getStatsParMois(6);
-
-    return {
-        formations_actives,
-        participants_mois,
-        clients_actifs,
-        solde_mois: solde.solde,
-        prochains_evenements,
-        stats_mois
-    };
+    return { formations_actives, participants_mois, clients_actifs, solde_mois: solde.solde, prochains_evenements, stats_mois };
 }
 
 // ============================================================
-// AUDIT LOG
+// AUDIT
 // ============================================================
 
-function logAudit(userId, action, table, recordId, oldValues = null, newValues = null) {
+function logAudit(userId, action, table, recordId) {
     try {
-        getDb().prepare(`
-            INSERT INTO audit_logs (user_id, action, table_cible, enregistrement_id, anciennes_valeurs, nouvelles_valeurs)
-            VALUES (?, ?, ?, ?, ?, ?)
-        `).run(userId, action, table, recordId, oldValues ? JSON.stringify(oldValues) : null, newValues ? JSON.stringify(newValues) : null);
-    } catch (e) {
-        // Ignorer les erreurs d'audit pour ne pas bloquer les opérations principales
-    }
+        db.run(
+            'INSERT INTO audit_logs (user_id, action, table_cible, enregistrement_id) VALUES (?, ?, ?, ?)',
+            [userId, action, table, recordId]
+        );
+        saveDb();
+    } catch (e) { /* ne pas bloquer les opérations principales */ }
 }
 
 function getAuditLogs(limit = 100) {
-    return getDb().prepare(`
-        SELECT a.*, u.nom || ' ' || u.prenom as user_nom
-        FROM audit_logs a LEFT JOIN users u ON a.user_id = u.id
-        ORDER BY a.created_at DESC LIMIT ?
-    `).all(limit);
+    return dbAll(
+        `SELECT a.*, u.nom || ' ' || u.prenom as user_nom FROM audit_logs a LEFT JOIN users u ON a.user_id = u.id ORDER BY a.created_at DESC LIMIT ?`,
+        [limit]
+    );
 }
 
 module.exports = {

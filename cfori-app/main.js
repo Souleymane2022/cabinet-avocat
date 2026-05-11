@@ -78,9 +78,9 @@ function createWindow() {
 // INITIALISATION DE L'APPLICATION
 // ============================================================
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
     // Initialiser la base de données
-    db.initDatabase(userDataPath);
+    await db.initDatabase(userDataPath);
 
     // Créer la fenêtre
     createWindow();
